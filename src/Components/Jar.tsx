@@ -3,12 +3,16 @@ import { IBallProps, IJar, IJarProps } from './interfaces';
 import styled from "styled-components";
 
 const Jar = (props: IJarProps) => {
-    const { balls, selectedBallId } = props;
+    const { id, balls, selectedBallId, onJarClick } = props;
     return (
         <Container>
             {
                 balls.map((ball) => {
-                    return <Ball color={ball.color} isSelected={ball.id === selectedBallId} />
+                    return <Ball
+                        key={ball.id}
+                        onClick={() => onJarClick(id, ball.id)}
+                        color={ball.color}
+                        isSelected={ball.id === selectedBallId} />
                 })
             }
         </Container>

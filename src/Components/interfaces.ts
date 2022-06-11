@@ -18,6 +18,7 @@ export interface IJarProps {
     // balls: Array<number>;
     balls: Array<IBall>;
     selectedBallId: number | null;
+    onJarClick: (jarId: number, ballId: number) => void;
 }
 
 export interface IBall {

@@ -5,11 +5,12 @@ import Jar from "./Jar"
 interface IGameFieldProps {
     jars: Array<IJar>,
     balls: Array<IBall>,
-    selectedBallId: number | null
+    selectedBallId: number | null,
+    onJarClick: any
 }
 
 const GameField = (props: IGameFieldProps) => {
-    const { balls, jars, selectedBallId } = props;
+    const { balls, jars, selectedBallId, onJarClick } = props;
 
     return (
         <Container>
@@ -23,7 +24,7 @@ const GameField = (props: IGameFieldProps) => {
                         }
                         ballsInJar.push(ball);
                     })
-                    return <Jar key={id} id={id} balls={ballsInJar} selectedBallId={selectedBallId}/>
+                    return <Jar key={id} onJarClick={onJarClick} id={id} balls={ballsInJar} selectedBallId={selectedBallId}/>
                 })
             }
         </Container>
