@@ -1,49 +1,31 @@
 import styled from "styled-components"
-import { IBall } from "./interfaces"
+import { IBall, IJar } from "./interfaces"
 import Jar from "./Jar"
 
-const GameField = (props: any) => {
-    const selectedBall = props.selectedBall;
-    const ballOne: IBall = {
-        color: "orange",
-        id: 1
-    }
+interface IGameFieldProps {
+    jars: Array<IJar>,
+    balls: Array<IBall>,
+    selectedBallId: number | null
+}
 
-    const ballTwo: IBall = {
-        color: "blue",
-        id: 2
-    }
-
-
-    const ballThree: IBall = {
-        color: "yellow",
-        id: 3
-    }
-
-    const ballFour: IBall = {
-        color: "orange",
-        id: 4
-    }
+const GameField = (props: IGameFieldProps) => {
+    const { balls, jars, selectedBallId } = props;
 
     return (
         <Container>
-
-            <Jar
-                balls={[ballOne, ballTwo, ballThree, ballFour]}
-                selectedBall={selectedBall}
-            />
-            <Jar
-                balls={[ballOne, ballTwo, ballThree, ballFour]}
-                selectedBall={selectedBall}
-            />
-            <Jar
-                balls={[ballOne, ballTwo, ballThree, ballFour]}
-                selectedBall={selectedBall}
-            />
-            <Jar
-                balls={[ballOne, ballTwo, ballThree, ballFour]}
-                selectedBall={selectedBall}
-            />
+            {
+                jars.map(({ id, ballsId }) => {
+                    const ballsInJar: Array<IBall> = [];
+                    ballsId.forEach((ballId) => {
+                        const ball = balls.find(({ id }) => id === ballId);
+                        if (typeof ball === 'undefined') {
+                            throw Error("Can't find ball by id")
+                        }
+                        ballsInJar.push(ball);
+                    })
+                    return <Jar key={id} id={id} balls={ballsInJar} selectedBallId={selectedBallId}/>
+                })
+            }
         </Container>
     );
 }

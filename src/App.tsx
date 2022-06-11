@@ -1,23 +1,39 @@
 import React from 'react';
 import './App.css';
 import GameField from './Components/GameField';
-// import { IState } from './Components/interfaces';
+import { IBall, IJar, IState } from './Components/interfaces';
+import ballsSet from './initialStates/ballsSet';
+import jarsSet from './initialStates/jarsSet';
 
-export default class App extends React.Component {
+export default class App extends React.Component<any, IState> {
 
     constructor(props: any) {
         super(props);
 
-        // How I can assign interface to state?
         this.state = {
-            selectedBall: 1,
+            selectedBallId: null,
             roundCount: null,
+            jars: [],
+            balls: []
         };
     }
 
+    componentDidMount() {
+        const balls = ballsSet;
+        const jars = jarsSet;
+
+        this.setState({ balls, jars })
+    }
+
     render() {
+        const {balls, jars, selectedBallId } = this.state;
+
         return (
-            <GameField selectedBall={1}/>
+            <GameField
+                selectedBallId={selectedBallId}
+                balls={balls}
+                jars={jars}
+            />
         );
     }
 }

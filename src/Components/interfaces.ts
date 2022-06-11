@@ -1,18 +1,28 @@
 export interface IState {
-    roundCount: number;
-    selectedBall: number | false;
+    selectedBallId: number | null,
+    roundCount: number | null,
+    jars: Array<IJar>,
+    balls: Array<IBall>
 }
 
 export interface IJar {
+    id: number;
+    ballsId: Array<number>;
+    // balls: Array<IBall>;
+    // selectedBallId: number | false;
+    // color?: string;
+}
+
+export interface IJarProps {
+    id: number;
+    // balls: Array<number>;
     balls: Array<IBall>;
-    selectedBall: number | false;
-    color?: string;
+    selectedBallId: number | null;
 }
 
 export interface IBall {
-    color: string;
     id: number;
-    position?: number;
+    color: string;
 }
 
 export interface IBallProps {

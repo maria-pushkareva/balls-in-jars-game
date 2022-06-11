@@ -1,14 +1,14 @@
 import React from 'react';
-import { IBallProps, IJar } from './interfaces';
+import { IBallProps, IJar, IJarProps } from './interfaces';
 import styled from "styled-components";
 
-const Jar = (props: IJar) => {
-    const { balls, selectedBall } = props;
+const Jar = (props: IJarProps) => {
+    const { balls, selectedBallId } = props;
     return (
         <Container>
             {
                 balls.map((ball) => {
-                    return <Ball color={ball.color} isSelected={ball.id === selectedBall} />
+                    return <Ball color={ball.color} isSelected={ball.id === selectedBallId} />
                 })
             }
         </Container>
