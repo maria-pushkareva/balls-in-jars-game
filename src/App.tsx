@@ -106,7 +106,6 @@ export default class App extends React.Component<any, IState> {
                 const newMoveCount = this.state.moveCount + 1;
 
                 const isWin = this.checkIfWin(newJars);
-                console.log('isWin', isWin)
 
                 this.setState({
                     activeBallId: null,
@@ -129,12 +128,10 @@ export default class App extends React.Component<any, IState> {
                 isWin = false;
             }
             else if (jar.ballsId.length === 4) {
-                console.log(jar);
                 const firstBallColor = this.findBall(jar.ballsId[0]).color;
 
                 jar.ballsId.forEach((ballId) => {
                     const ballColor = this.findBall(ballId).color;
-                    console.log(ballColor, firstBallColor);
                     if (ballColor !== firstBallColor) {
                         isWin = false;
                     }
