@@ -8,12 +8,11 @@ export interface IBasicProps {
 export interface IState {
     state: 'beginning' | 'game' | 'win'
     theme: ITheme,
-    level: number,
+    level: 1 | 2,
     activeBallId: number | null,
     activeJarId: number | null,
     moveCount: number,
     previousJarsState: Array<IJar> | null,
-    isWin: boolean,
     jars: Array<IJar>,
     balls: Array<IBall>
 }
@@ -28,7 +27,7 @@ export interface IJar {
 
 export interface IJarProps extends IBasicProps {
     id: number;
-    // balls: Array<number>;
+    level: 1 | 2,
     balls: Array<IBall>;
     activeBallId: number | null;
     onBallClick: (jarId: number, ballId: number, e: any) => void;
@@ -41,11 +40,13 @@ export interface IBall {
 }
 
 export interface IBallProps extends IBasicProps {
+    level: 1 | 2,
     color: string;
     isSelected: boolean;
 }
 
 export interface IGameFieldProps extends IBasicProps {
+    level: 1 | 2,
     jars: Array<IJar>,
     balls: Array<IBall>,
     activeBallId: number | null,
@@ -54,8 +55,8 @@ export interface IGameFieldProps extends IBasicProps {
 }
 
 export interface IToolbarProps extends IBasicProps {
+    level: 1 | 2,
     moveCount: number,
-    isWin: boolean,
     isBackActive: boolean,
     onThemeToggle: () => void,
     onBackClick: () => void,

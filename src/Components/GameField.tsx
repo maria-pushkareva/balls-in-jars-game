@@ -3,7 +3,7 @@ import { IBall, IBasicProps, IGameFieldProps, IJar } from "./interfaces"
 import Jar from "./Jar"
 
 const GameField = (props: IGameFieldProps) => {
-    const { theme, balls, jars, activeBallId, onBallClick, onJarClick } = props;
+    const { theme, level, balls, jars, activeBallId, onBallClick, onJarClick } = props;
 
     return (
         <GameFieldContainer>
@@ -17,7 +17,7 @@ const GameField = (props: IGameFieldProps) => {
                         }
                         ballsInJar.push(ball);
                     })
-                    return <Jar theme={theme} key={id} onBallClick={onBallClick} onJarClick={onJarClick} id={id} balls={ballsInJar} activeBallId={activeBallId} />
+                    return <Jar level={level} theme={theme} key={id} onBallClick={onBallClick} onJarClick={onJarClick} id={id} balls={ballsInJar} activeBallId={activeBallId} />
                 })
             }
         </GameFieldContainer>
@@ -30,7 +30,7 @@ const GameFieldContainer = styled.div`;
     justify-content: center;
     align-items: center;
 
-    height: inherited;
+    height: 400px;
     width: inherited;
 `
 

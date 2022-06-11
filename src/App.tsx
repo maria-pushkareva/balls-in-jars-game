@@ -23,7 +23,6 @@ export default class App extends React.Component<any, IState> {
             activeJarId: null,
             previousJarsState: null,
             moveCount: 0,
-            isWin: false,
             jars: [],
             balls: []
         };
@@ -42,7 +41,6 @@ export default class App extends React.Component<any, IState> {
             activeJarId: null,
             previousJarsState: null,
             moveCount: 0,
-            isWin: false,
             jars: level === 1 ? sixJarsSet : nineJarSet,
         })
     }
@@ -134,11 +132,9 @@ export default class App extends React.Component<any, IState> {
         }
     }
 
-    public checkIfWin = (newJars: Array<IJar>): void => {
-        const { balls } = this.state;
-
+    public checkIfWin = (jars: Array<IJar>): void => {
         let isWin: boolean = true;
-        newJars.forEach((jar) => {
+        jars.forEach((jar) => {
             if (jar.ballsId.length > 0 && jar.ballsId.length < 4) {
                 isWin = false;
             }
@@ -154,12 +150,26 @@ export default class App extends React.Component<any, IState> {
             }
         })
 
-        if(isWin) {
+        if (isWin) {
             setTimeout(() => {
-                this.setState({ isWin, state: 'win' });
+                this.setState({ state: 'win' });
             }, 500)
+        } else {
+            // this.checkIfLost(jars);
         }
     }
+
+    // public checkIfLost = (jars: Array<IJar>): void => {
+    //     let canMakeSteps = false;
+    //     jars.forEach((jar) => {
+    //         const length = jar.ballsId.length;
+    //         if (length === 1) {
+    //             canMakeSteps = true;
+    //         } else {
+
+    //         }
+    //     })
+    // }
 
     public handleBackStep = (): void => {
         const { previousJarsState } = this.state;
@@ -194,50 +204,57 @@ export default class App extends React.Component<any, IState> {
     }
 
     render() {
-        const { state, theme, balls, jars, activeBallId, moveCount, isWin, previousJarsState } = this.state;
+        const { state, theme, level, balls, jars, activeBallId, moveCount, previousJarsState } = this.state;
 
         return (
-            <MainContainer id={"main-container"} theme={theme}>
-                <CustomTitle theme={theme}>
-                    {"SORT BALLS PUZZLE"}
-                </CustomTitle>
-                <Toolbar
-                    theme={theme}
-                    moveCount={moveCount}
-                    isWin={isWin}
-                    onBackClick={this.handleBackStep}
-                    onThemeToggle={this.toggleTheme}
-                    reset={this.reset}
-                    isBackActive={previousJarsState !== null}
-                />
-                <Field theme={theme}>
-                    {state === 'beginning' &&
-                        <>
-                            <div>{'Lets start a game!'}</div>
-                            <ChoseLevelButton theme={theme} onClick={this.choseFirstLevel}>{'EASY'}</ChoseLevelButton>
-                            <ChoseLevelButton theme={theme} onClick={this.choseSecondLevel}>{'MIDDLE'}</ChoseLevelButton>
-                        </>
-                    }
-                    {state === 'game' &&
-                        <GameField
-                            theme={theme}
-                            activeBallId={activeBallId}
-                            balls={balls}
-                            jars={jars}
-                            onBallClick={this.handleClickOnBall}
-                            onJarClick={this.handleClickOnJar}
-                        />
-                    }
-                    {state === 'win' &&
-                        <div>{'Hey, you won!'}</div>
-                    }
-                </Field>
-            </MainContainer>
+            <Background id={"main-container"} theme={theme}>
+                <MainContainer>
+                    <CustomTitle theme={theme}>
+                        {"SORT BALLS PUZZLE"}
+                    </CustomTitle>
+                    <Field theme={theme}>
+                        {state === 'beginning' &&
+                            <MessageContainer>
+                                <div>{'Lets start a game!'}</div>
+                                <ChoseLevelButton theme={theme} onClick={this.choseFirstLevel}>{'EASY'}</ChoseLevelButton>
+                                <ChoseLevelButton theme={theme} onClick={this.choseSecondLevel}>{'MIDDLE'}</ChoseLevelButton>
+                            </MessageContainer>
+                        }
+                        {state === 'game' &&
+                            <>
+                                <Toolbar
+                                    level={level}
+                                    theme={theme}
+                                    moveCount={moveCount}
+                                    onBackClick={this.handleBackStep}
+                                    onThemeToggle={this.toggleTheme}
+                                    reset={this.reset}
+                                    isBackActive={previousJarsState !== null}
+                                />
+                                <GameField
+                                    theme={theme}
+                                    level={level}
+                                    activeBallId={activeBallId}
+                                    balls={balls}
+                                    jars={jars}
+                                    onBallClick={this.handleClickOnBall}
+                                    onJarClick={this.handleClickOnJar}
+                                />
+                            </>
+                        }
+                        {state === 'win' &&
+                            <MessageContainer>
+                                <div>{`Hey, you did it in ${moveCount} steps!`}</div>
+                            </MessageContainer>
+                        }
+                    </Field>
+                </MainContainer>
+            </Background>
         );
     }
 }
 
-const MainContainer = styled.div`
+const Background = styled.div`
     height: 100vh;
     width: 100vw;
 
@@ -248,7 +265,11 @@ const MainContainer = styled.div`
 
     font-family: impact;
     
-    background-color: ${(props: any) => props.theme.background}
+    background-color: ${(props: IBasicProps) => props.theme.background}
+`
+const MainContainer = styled.div`
+    height: 530px;
+    width: 800px
 `
 
 const CustomTitle = styled.div`
@@ -258,7 +279,7 @@ const CustomTitle = styled.div`
     align-items: center;
 
     height: 80px;
-    width: 800px;
+    width: inherit;
 
     font-size: 50px;
 
@@ -266,14 +287,24 @@ const CustomTitle = styled.div`
     background-color: ${(props: IBasicProps) => props.theme.title.background};
 `
 
+const MessageContainer = styled.div`
+    height: 450px;
+    width: inherit;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`
+
 const Field = styled.div`
     display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;    
+    flex-direction: column;
 
-    height: 400px;
-    width: 800px;
+    align-items: center;
+
+    height: 450px;
+    width: inherit;
 
     color: ${(props: IBasicProps) => props.theme.font};
     background-color: ${(props: IBasicProps) => props.theme.field.background};

@@ -1,10 +1,16 @@
 import { IBallProps, IBasicProps, IJarProps } from './interfaces';
 import styled from "styled-components";
+import { ITheme } from '../Themes/ITheme';
+
+interface IProps {
+    theme: ITheme,
+    level: 1 | 2
+}
 
 const Jar = (props: IJarProps) => {
-    const { theme, id, balls, activeBallId, onBallClick, onJarClick } = props;
+    const { theme, level, id, balls, activeBallId, onBallClick, onJarClick } = props;
     return (
-        <Container theme={theme} onClick={() => onJarClick(id)}>
+        <Container theme={theme} level={level} onClick={() => onJarClick(id)}>
             {
                 balls.map((ball) => {
                     let color: string;
@@ -35,6 +41,7 @@ const Jar = (props: IJarProps) => {
                     }
 
                     return <Ball
+                        level={level}
                         theme={theme}
                         key={ball.id}
                         onClick={(e) => onBallClick(id, ball.id, e)}
@@ -55,9 +62,9 @@ const Container = styled.div`
 
     margin: 20px;
 
-    background-color: ${(props: IBasicProps) => props.theme.jars.background};
-    border: 6px solid ${(props: IBasicProps) => props.theme.jars.border};
-    border-top: 3px solid  ${(props: IBasicProps) => props.theme.jars.border};
+    background-color: ${(props: IProps) => props.theme.jars.background};
+    border: 6px solid ${(props: IProps) => props.theme.jars.border};
+    border-top: 3px solid  ${(props: IProps) => props.theme.jars.border};
     border-radius: 0px 0px 25px 25px;
 `;
 
