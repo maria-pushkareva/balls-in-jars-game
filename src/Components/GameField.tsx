@@ -2,16 +2,14 @@ import styled from "styled-components"
 import { IBall, IGameFieldProps, IJar } from "./interfaces"
 import Jar from "./Jar"
 
-
 const GameField = (props: IGameFieldProps) => {
     const { balls, jars, activeBallId, onBallClick, onJarClick } = props;
 
     return (
-        <Container>
+        <GameFieldContainer>
             {
                 jars.map(({ id, ballsId }) => {
                     const ballsInJar: Array<IBall> = [];
-                    console.log(ballsId);
                     ballsId.forEach((ballId) => {
                         const ball = balls.find(({ id }) => id === ballId);
                         if (typeof ball === 'undefined') {
@@ -22,18 +20,18 @@ const GameField = (props: IGameFieldProps) => {
                     return <Jar key={id} onBallClick={onBallClick} onJarClick={onJarClick} id={id} balls={ballsInJar} activeBallId={activeBallId} />
                 })
             }
-        </Container>
+        </GameFieldContainer>
     );
 }
 
-const Container = styled.div`;
+const GameFieldContainer = styled.div`;
     display: flex;
-    flex-direction: row; 
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 
     height: 400px;
     width: 800px;
-
-    margin: auto;
 
     background-color: darkslategrey;
 `

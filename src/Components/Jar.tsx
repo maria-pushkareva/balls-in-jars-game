@@ -22,14 +22,14 @@ const Container = styled.div`
     display: flex; 
     flex-direction: column-reverse;   
 
-    height: 250px;
+    height: 230px;
     width: 60px;
 
     margin: 20px;
 
     background-color: lightslategrey;
     border: 6px solid lightsteelblue;
-    border-weight: 3px;
+    border-top: 3px solid lightsteelblue;
     border-radius: 0px 0px 25px 25px;
 `;
 

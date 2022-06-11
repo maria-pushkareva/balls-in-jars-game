@@ -5,6 +5,8 @@ import GameField from './Components/GameField';
 import { IBall, IJar, IState } from './Components/interfaces';
 import ballsSet from './initialStates/ballsSet';
 import jarsSet from './initialStates/jarsSet';
+import styled from 'styled-components';
+import Toolbar from './Components/Toolbar';
 
 export default class App extends React.Component<any, IState> {
 
@@ -14,7 +16,8 @@ export default class App extends React.Component<any, IState> {
         this.state = {
             activeBallId: null,
             activeJarId: null,
-            roundCount: null,
+            moveCount: 0,
+            isWin: false,
             jars: [],
             balls: []
         };
@@ -45,15 +48,15 @@ export default class App extends React.Component<any, IState> {
 
     public handleClickOnBall = (jarId: number, ballId: number, e: any): void => {
         e.stopPropagation();
-        
+
         const clickedJar = this.findJar(jarId);
 
         const ballsNumber = clickedJar.ballsId.length;
         const topBallId = clickedJar.ballsId[ballsNumber - 1];
 
-        if (topBallId !== ballId || this.state.activeBallId === ballId) {
+        if (/*topBallId !== ballId ||*/ this.state.activeBallId === ballId) {
             this.setState({ activeBallId: null, activeJarId: null });
-        } else {
+        } else if (topBallId === ballId) {
             this.setState({ activeBallId: ballId, activeJarId: jarId });
         }
     }
@@ -99,28 +102,96 @@ export default class App extends React.Component<any, IState> {
                     }
                 })
 
+                const newMoveCount = this.state.moveCount + 1;
+
+                const isWin = this.checkIfWin(newJars);
+                console.log('isWin', isWin)
+
                 this.setState({
                     activeBallId: null,
                     activeJarId: null,
-                    jars: newJars
+                    jars: newJars,
+                    moveCount: newMoveCount,
+                    isWin
                 })
             }
         }
     }
 
+    public checkIfWin = (newJars: Array<IJar>): boolean => {
+        const { balls } = this.state;
+
+        let isWin: boolean = true;
+        newJars.forEach((jar) => {
+            if (jar.ballsId.length > 0 && jar.ballsId.length < 4) {
+                isWin = false;
+            } 
+            else if (jar.ballsId.length === 4) {
+                console.log(jar);
+                const firstBallColor = this.findBall(jar.ballsId[0]).color;
+                
+                jar.ballsId.forEach((ballId) => {
+                    const ballColor = this.findBall(ballId).color;
+                    console.log(ballColor, firstBallColor);
+                    if (ballColor !== firstBallColor) {
+                        isWin = false;
+                    }
+                })
+            }
+        })
+
+        return isWin;
+    }
     render() {
-        const { balls, jars, activeBallId } = this.state;
+        const { balls, jars, activeBallId, moveCount, isWin } = this.state;
 
         return (
-            <GameField
-                activeBallId={activeBallId}
-                balls={balls}
-                jars={jars}
-                onBallClick={this.handleClickOnBall}
-                onJarClick={this.handleClickOnJar}
-            />
+            <MainContainer id={"main-container"}>
+                <CustomTitle>
+                    {"SORT US"}
+                </CustomTitle>
+                <Toolbar
+                    moveCount={moveCount}
+                    isWin={isWin}
+                />
+                <GameField
+                    activeBallId={activeBallId}
+                    balls={balls}
+                    jars={jars}
+                    onBallClick={this.handleClickOnBall}
+                    onJarClick={this.handleClickOnJar}
+                />
+            </MainContainer>
         );
     }
 }
+
+const MainContainer = styled.div`
+    height: 100vh;
+    width: 100vw;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    background-color: #252525
+`
+
+const CustomTitle = styled.div`
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    height: 80px;
+    width: 800px;
+
+    font-size: 50px;
+    font-family: impact;
+
+    color: lightsteelblue;
+    background-color: darkslategrey;
+`
 
 

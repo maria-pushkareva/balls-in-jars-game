@@ -1,7 +1,8 @@
 export interface IState {
     activeBallId: number | null,
     activeJarId: number | null,
-    roundCount: number | null,
+    moveCount: number,
+    isWin: boolean,
     jars: Array<IJar>,
     balls: Array<IBall>
 }
