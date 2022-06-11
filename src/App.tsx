@@ -2,11 +2,13 @@ import React from 'react';
 import './App.css';
 import _ from 'lodash';
 import GameField from './Components/GameField';
-import { IBall, IJar, IState } from './Components/interfaces';
-import ballsSet from './initialStates/ballsSet';
-import jarsSet from './initialStates/jarsSet';
+import { IBall, IBasicProps, IJar, IState } from './Components/interfaces';
+import { sixteenBallsSet, twentyEightBallsSet } from './initialStates/ballsSets';
+import { nineJarSet, sixJarsSet } from './initialStates/jarsSets';
 import styled from 'styled-components';
 import Toolbar from './Components/Toolbar';
+import DarkTheme from './Themes/DarkTheme';
+import LightTheme from './Themes/LightTheme';
 
 export default class App extends React.Component<any, IState> {
 
@@ -14,6 +16,9 @@ export default class App extends React.Component<any, IState> {
         super(props);
 
         this.state = {
+            state: 'beginning',
+            level: 1,
+            theme: DarkTheme,
             activeBallId: null,
             activeJarId: null,
             previousJarsState: null,
@@ -24,11 +29,22 @@ export default class App extends React.Component<any, IState> {
         };
     }
 
-    componentDidMount() {
-        const balls = ballsSet;
-        const jars = jarsSet;
+    public toggleTheme = (): void => {
+        const { theme } = this.state;
+        const newTheme = theme === DarkTheme ? LightTheme : DarkTheme;
+        this.setState({ theme: newTheme })
+    }
 
-        this.setState({ balls, jars })
+    public reset = (): void => {
+        const { level } = this.state;
+        this.setState({
+            activeBallId: null,
+            activeJarId: null,
+            previousJarsState: null,
+            moveCount: 0,
+            isWin: false,
+            jars: level === 1 ? sixJarsSet : nineJarSet,
+        })
     }
 
     private findJar = (jarId: number): IJar => {
@@ -65,7 +81,7 @@ export default class App extends React.Component<any, IState> {
     public handleClickOnJar = (jarId: number): void => {
         const { activeBallId, activeJarId, balls, jars } = this.state;
 
-        if (activeBallId && activeJarId) {
+        if (activeBallId && activeJarId && activeJarId !== jarId) {
             const activeBall = this.findBall(activeBallId);
 
             const clickedJar = this.findJar(jarId);
@@ -105,21 +121,20 @@ export default class App extends React.Component<any, IState> {
 
                 const newMoveCount = this.state.moveCount + 1;
 
-                const isWin = this.checkIfWin(newJars);
-
                 this.setState({
                     activeBallId: null,
                     activeJarId: null,
                     jars: newJars,
                     moveCount: newMoveCount,
-                    previousJarsState: jars,
-                    isWin
+                    previousJarsState: jars
                 })
+
+                this.checkIfWin(newJars);
             }
         }
     }
 
-    public checkIfWin = (newJars: Array<IJar>): boolean => {
+    public checkIfWin = (newJars: Array<IJar>): void => {
         const { balls } = this.state;
 
         let isWin: boolean = true;
@@ -139,7 +154,11 @@ export default class App extends React.Component<any, IState> {
             }
         })
 
-        return isWin;
+        if(isWin) {
+            setTimeout(() => {
+                this.setState({ isWin, state: 'win' });
+            }, 500)
+        }
     }
 
     public handleBackStep = (): void => {
@@ -156,27 +175,63 @@ export default class App extends React.Component<any, IState> {
         }
     }
 
+    public choseFirstLevel = (): void => {
+        this.setState({
+            level: 1,
+            state: 'game',
+            jars: sixJarsSet,
+            balls: sixteenBallsSet
+        })
+    }
+
+    public choseSecondLevel = (): void => {
+        this.setState({
+            level: 2,
+            state: 'game',
+            jars: nineJarSet,
+            balls: twentyEightBallsSet
+        })
+    }
+
     render() {
-        const { balls, jars, activeBallId, moveCount, isWin, previousJarsState } = this.state;
+        const { state, theme, balls, jars, activeBallId, moveCount, isWin, previousJarsState } = this.state;
 
         return (
-            <MainContainer id={"main-container"}>
-                <CustomTitle>
-                    {"SORT US"}
+            <MainContainer id={"main-container"} theme={theme}>
+                <CustomTitle theme={theme}>
+                    {"SORT BALLS PUZZLE"}
                 </CustomTitle>
                 <Toolbar
+                    theme={theme}
                     moveCount={moveCount}
                     isWin={isWin}
                     onBackClick={this.handleBackStep}
+                    onThemeToggle={this.toggleTheme}
+                    reset={this.reset}
                     isBackActive={previousJarsState !== null}
                 />
-                <GameField
-                    activeBallId={activeBallId}
-                    balls={balls}
-                    jars={jars}
-                    onBallClick={this.handleClickOnBall}
-                    onJarClick={this.handleClickOnJar}
-                />
+                <Field theme={theme}>
+                    {state === 'beginning' &&
+                        <>
+                            <div>{'Lets start a game!'}</div>
+                            <ChoseLevelButton theme={theme} onClick={this.choseFirstLevel}>{'EASY'}</ChoseLevelButton>
+                            <ChoseLevelButton theme={theme} onClick={this.choseSecondLevel}>{'MIDDLE'}</ChoseLevelButton>
+                        </>
+                    }
+                    {state === 'game' &&
+                        <GameField
+                            theme={theme}
+                            activeBallId={activeBallId}
+                            balls={balls}
+                            jars={jars}
+                            onBallClick={this.handleClickOnBall}
+                            onJarClick={this.handleClickOnJar}
+                        />
+                    }
+                    {state === 'win' &&
+                        <div>{'Hey, you won!'}</div>
+                    }
+                </Field>
             </MainContainer>
         );
     }
@@ -190,8 +245,10 @@ const MainContainer = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    font-family: impact;
     
-    background-color: #252525
+    background-color: ${(props: any) => props.theme.background}
 `
 
 const CustomTitle = styled.div`
@@ -204,10 +261,32 @@ const CustomTitle = styled.div`
     width: 800px;
 
     font-size: 50px;
-    font-family: impact;
 
-    color: lightsteelblue;
-    background-color: darkslategrey;
+    color: ${(props: IBasicProps) => props.theme.font};
+    background-color: ${(props: IBasicProps) => props.theme.title.background};
 `
 
+const Field = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;    
 
+    height: 400px;
+    width: 800px;
+
+    color: ${(props: IBasicProps) => props.theme.font};
+    background-color: ${(props: IBasicProps) => props.theme.field.background};
+`
+
+const ChoseLevelButton = styled.button`
+    height: 50px;
+    width: 100px;
+
+    margin: 20px;
+
+    border: 5px solid ${(props: IBasicProps) => props.theme.accents};
+    border-radius: 10px;
+
+    background-color: ${(props: IBasicProps) => props.theme.toolbar.background};
+`

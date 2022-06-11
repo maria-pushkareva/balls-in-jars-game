@@ -1,16 +1,44 @@
-import { IBallProps, IJarProps } from './interfaces';
+import { IBallProps, IBasicProps, IJarProps } from './interfaces';
 import styled from "styled-components";
 
 const Jar = (props: IJarProps) => {
-    const { id, balls, activeBallId, onBallClick, onJarClick } = props;
+    const { theme, id, balls, activeBallId, onBallClick, onJarClick } = props;
     return (
-        <Container onClick={() => onJarClick(id)}>
+        <Container theme={theme} onClick={() => onJarClick(id)}>
             {
                 balls.map((ball) => {
+                    let color: string;
+                    switch (ball.color) {
+                        case 'first':
+                            color = theme.balls.firstColor;
+                            break;
+                        case 'second':
+                            color = theme.balls.secondColor;
+                            break;
+                        case 'third':
+                            color = theme.balls.thirdColor;
+                            break;
+                        case 'fourth':
+                            color = theme.balls.fourthColor;
+                            break;
+                        case 'fifth':
+                            color = theme.balls.fifthColor;
+                            break;
+                        case 'sixth':
+                            color = theme.balls.sixthColor;
+                            break;
+                        case 'seventh':
+                            color = theme.balls.seventhColor;
+                            break;
+                        default:
+                            throw Error("Color wasn't found");
+                    }
+
                     return <Ball
+                        theme={theme}
                         key={ball.id}
                         onClick={(e) => onBallClick(id, ball.id, e)}
-                        color={ball.color}
+                        color={color}
                         isSelected={ball.id === activeBallId} />
                 })
             }
@@ -27,9 +55,9 @@ const Container = styled.div`
 
     margin: 20px;
 
-    background-color: lightslategrey;
-    border: 6px solid lightsteelblue;
-    border-top: 3px solid lightsteelblue;
+    background-color: ${(props: IBasicProps) => props.theme.jars.background};
+    border: 6px solid ${(props: IBasicProps) => props.theme.jars.border};
+    border-top: 3px solid  ${(props: IBasicProps) => props.theme.jars.border};
     border-radius: 0px 0px 25px 25px;
 `;
 
@@ -41,7 +69,7 @@ const Ball = styled.div`
 
     background-color: ${(props: IBallProps) => props.color};
 
-    border-color: white;
+    border-color: ${(props: IBallProps) => props.theme.balls.onSelectBorder};
     border-width: ${(props: IBallProps) => props.isSelected ? '4px' : '0px'};
     border-style: solid;
 

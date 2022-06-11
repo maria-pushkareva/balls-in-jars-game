@@ -1,4 +1,14 @@
+import { ITheme } from "../Themes/ITheme";
+
+
+export interface IBasicProps {
+    theme: ITheme
+}
+
 export interface IState {
+    state: 'beginning' | 'game' | 'win'
+    theme: ITheme,
+    level: number,
     activeBallId: number | null,
     activeJarId: number | null,
     moveCount: number,
@@ -16,7 +26,7 @@ export interface IJar {
     // color?: string;
 }
 
-export interface IJarProps {
+export interface IJarProps extends IBasicProps {
     id: number;
     // balls: Array<number>;
     balls: Array<IBall>;
@@ -30,12 +40,12 @@ export interface IBall {
     color: string;
 }
 
-export interface IBallProps {
+export interface IBallProps extends IBasicProps {
     color: string;
     isSelected: boolean;
 }
 
-export interface IGameFieldProps {
+export interface IGameFieldProps extends IBasicProps {
     jars: Array<IJar>,
     balls: Array<IBall>,
     activeBallId: number | null,
@@ -43,9 +53,11 @@ export interface IGameFieldProps {
     onJarClick: (jarId: number) => void;
 }
 
-export interface IToolbarProps {
+export interface IToolbarProps extends IBasicProps {
     moveCount: number,
     isWin: boolean,
     isBackActive: boolean,
+    onThemeToggle: () => void,
     onBackClick: () => void,
+    reset: () => void
 }

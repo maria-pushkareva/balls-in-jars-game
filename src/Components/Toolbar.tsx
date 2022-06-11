@@ -1,14 +1,16 @@
 import styled from "styled-components";
-import { IToolbarProps } from "./interfaces";
+import { IBasicProps, IToolbarProps } from "./interfaces";
 
 const Toolbar = (props: IToolbarProps) => {
-    const { moveCount, isWin, isBackActive, onBackClick } = props;
-    return <Container>
+    const { theme, moveCount, isWin, isBackActive, onBackClick, onThemeToggle, reset } = props;
+    return <Container theme={theme}>
         <MoveCountDiv>{`Move count: ${moveCount}`}</MoveCountDiv>
         {isWin &&
             <div>{"Hurray!"}</div>
         }
-        <div onClick={onBackClick} style={{ cursor: isBackActive ? "pointer" : ""}}>{"Back"}</div>
+        <div onClick={onBackClick} style={{ cursor: isBackActive ? "pointer" : 'default', marginRight: '100px'}}>{"Back"}</div>
+        <div onClick={onThemeToggle} style={{ cursor: 'pointer', marginRight: '100px'}}>{'Toggle theme'}</div>
+        <div onClick={reset} style={{ cursor: 'pointer'}}>{'Reset'}</div>
     </Container>
 }
 
@@ -23,10 +25,9 @@ const Container = styled.div`
     width: 800px;
 
     font-size: 20px;
-    font-family: impact;
 
-    color: white;
-    background-color: darkcyan;
+    color: ${(props: IBasicProps) => props.theme.font};
+    background-color:  ${(props: IBasicProps) => props.theme.toolbar.background};
 `
 
 const MoveCountDiv = styled.div`
