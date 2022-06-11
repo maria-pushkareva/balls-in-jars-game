@@ -16,6 +16,7 @@ export default class App extends React.Component<any, IState> {
         this.state = {
             activeBallId: null,
             activeJarId: null,
+            previousJarsState: null,
             moveCount: 0,
             isWin: false,
             jars: [],
@@ -112,6 +113,7 @@ export default class App extends React.Component<any, IState> {
                     activeJarId: null,
                     jars: newJars,
                     moveCount: newMoveCount,
+                    previousJarsState: jars,
                     isWin
                 })
             }
@@ -125,11 +127,11 @@ export default class App extends React.Component<any, IState> {
         newJars.forEach((jar) => {
             if (jar.ballsId.length > 0 && jar.ballsId.length < 4) {
                 isWin = false;
-            } 
+            }
             else if (jar.ballsId.length === 4) {
                 console.log(jar);
                 const firstBallColor = this.findBall(jar.ballsId[0]).color;
-                
+
                 jar.ballsId.forEach((ballId) => {
                     const ballColor = this.findBall(ballId).color;
                     console.log(ballColor, firstBallColor);
@@ -142,8 +144,23 @@ export default class App extends React.Component<any, IState> {
 
         return isWin;
     }
+
+    public handleBackStep = (): void => {
+        const { previousJarsState } = this.state;
+        const newMoveCount = this.state.moveCount + 1;
+        if (previousJarsState) {
+            this.setState({
+                activeBallId: null,
+                activeJarId: null,
+                jars: previousJarsState,
+                moveCount: newMoveCount,
+                previousJarsState: null
+            })
+        }
+    }
+
     render() {
-        const { balls, jars, activeBallId, moveCount, isWin } = this.state;
+        const { balls, jars, activeBallId, moveCount, isWin, previousJarsState } = this.state;
 
         return (
             <MainContainer id={"main-container"}>
@@ -153,6 +170,8 @@ export default class App extends React.Component<any, IState> {
                 <Toolbar
                     moveCount={moveCount}
                     isWin={isWin}
+                    onBackClick={this.handleBackStep}
+                    isBackActive={previousJarsState !== null}
                 />
                 <GameField
                     activeBallId={activeBallId}
