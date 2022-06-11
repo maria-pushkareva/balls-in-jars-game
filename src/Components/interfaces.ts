@@ -1,5 +1,6 @@
 export interface IState {
-    selectedBallId: number | null,
+    activeBallId: number | null,
+    activeJarId: number | null,
     roundCount: number | null,
     jars: Array<IJar>,
     balls: Array<IBall>
@@ -9,7 +10,7 @@ export interface IJar {
     id: number;
     ballsId: Array<number>;
     // balls: Array<IBall>;
-    // selectedBallId: number | false;
+    // activeBallId: number | false;
     // color?: string;
 }
 
@@ -17,8 +18,9 @@ export interface IJarProps {
     id: number;
     // balls: Array<number>;
     balls: Array<IBall>;
-    selectedBallId: number | null;
-    onJarClick: (jarId: number, ballId: number) => void;
+    activeBallId: number | null;
+    onBallClick: (jarId: number, ballId: number, e: any) => void;
+    onJarClick: (jarId: number) => void;
 }
 
 export interface IBall {
@@ -29,4 +31,12 @@ export interface IBall {
 export interface IBallProps {
     color: string;
     isSelected: boolean;
+}
+
+export interface IGameFieldProps {
+    jars: Array<IJar>,
+    balls: Array<IBall>,
+    activeBallId: number | null,
+    onBallClick: (jarId: number, ballId: number, e: any) => void;
+    onJarClick: (jarId: number) => void;
 }

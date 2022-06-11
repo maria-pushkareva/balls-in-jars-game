@@ -1,18 +1,17 @@
-import React from 'react';
-import { IBallProps, IJar, IJarProps } from './interfaces';
+import { IBallProps, IJarProps } from './interfaces';
 import styled from "styled-components";
 
 const Jar = (props: IJarProps) => {
-    const { id, balls, selectedBallId, onJarClick } = props;
+    const { id, balls, activeBallId, onBallClick, onJarClick } = props;
     return (
-        <Container>
+        <Container onClick={() => onJarClick(id)}>
             {
                 balls.map((ball) => {
                     return <Ball
                         key={ball.id}
-                        onClick={() => onJarClick(id, ball.id)}
+                        onClick={(e) => onBallClick(id, ball.id, e)}
                         color={ball.color}
-                        isSelected={ball.id === selectedBallId} />
+                        isSelected={ball.id === activeBallId} />
                 })
             }
         </Container>
@@ -28,9 +27,9 @@ const Container = styled.div`
 
     margin: 20px;
 
-    background-color: lightsteelblue;
-    border: 6px solid lightslategrey;
-    border-top: 3px solid lightslategrey;
+    background-color: lightslategrey;
+    border: 6px solid lightsteelblue;
+    border-weight: 3px;
     border-radius: 0px 0px 25px 25px;
 `;
 

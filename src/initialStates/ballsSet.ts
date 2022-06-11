@@ -1,22 +1,27 @@
 import { IBall } from "../Components/interfaces"
 
 const ballOne: IBall = {
-    color: "orange",
+    color: "coral",
     id: 1
 }
 const ballTwo: IBall = {
-    color: "blue",
+    color: "indigo",
     id: 2
 }
 const ballThree: IBall = {
-    color: "yellow",
+    color: "gold",
     id: 3
 }
 const ballFour: IBall = {
-    color: "orange",
+    color: "coral",
     id: 4
 }
 
-const ballsSet = [ballOne, ballTwo, ballThree, ballFour]
+const ballFive: IBall = {
+    color: "indianRed",
+    id: 5
+}
+
+const ballsSet = [ballOne, ballTwo, ballThree, ballFour, ballFive]
 
 export default ballsSet;

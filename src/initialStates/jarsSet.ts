@@ -7,9 +7,14 @@ const jarOne: IJar = {
 
 const jarTwo: IJar = {
     id: 15,
-    ballsId: [3, 4]
+    ballsId: [3, 5, 4]
 }
 
-const jarsSet = [jarOne, jarTwo];
+const jarThree: IJar = {
+    id: 20,
+    ballsId: []
+}
+
+const jarsSet = [jarOne, jarTwo, jarThree];
 
 export default jarsSet;
