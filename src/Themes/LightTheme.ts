@@ -26,6 +26,10 @@ const LightTheme: ITheme = {
         sixthColor: 'mediumOrchid',
         seventhColor: 'yellowGreen',
         onSelectBorder: 'white',
+    },
+    modal: {
+        shadow: 'rgba(169,169,169, 0.3)',
+        background: 'lavender',
     }
 }
 

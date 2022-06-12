@@ -1,3 +1,4 @@
+import { VoidExpression } from "typescript";
 import { ITheme } from "../Themes/ITheme";
 
 
@@ -14,7 +15,13 @@ export interface IState {
     moveCount: number,
     previousJarsState: Array<IJar> | null,
     jars: Array<IJar>,
-    balls: Array<IBall>
+    balls: Array<IBall>,
+    canMakeSteps: boolean,
+    showModal: boolean,
+    modal: {
+        type: 'lost' | 'won',
+        text: string
+    }
 }
 
 export interface IJar {
@@ -36,11 +43,11 @@ export interface IJarProps extends IBasicProps {
 
 export interface IBall {
     id: number;
-    color: string;
+    colorId: number;
+    color?: string;
 }
 
 export interface IBallProps extends IBasicProps {
-    level: 1 | 2,
     color: string;
     isSelected: boolean;
 }
@@ -61,4 +68,20 @@ export interface IToolbarProps extends IBasicProps {
     onThemeToggle: () => void,
     onBackClick: () => void,
     reset: () => void
+}
+
+export interface IModalProps extends IBasicProps {
+    text: string;
+    buttons: Array<IButton>;
+    onDismiss: () => void;
+}
+
+export interface IButtonProps extends IBasicProps {
+    text: string;
+    onClick: () => void;
+}
+
+export interface IButton {
+    text: string;
+    onClick: () => void;
 }

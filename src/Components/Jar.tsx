@@ -4,49 +4,58 @@ import { ITheme } from '../Themes/ITheme';
 
 interface IProps {
     theme: ITheme,
-    level: 1 | 2
+    isFirstLevel: boolean,
 }
 
 const Jar = (props: IJarProps) => {
     const { theme, level, id, balls, activeBallId, onBallClick, onJarClick } = props;
+    const isFirstLevel = level === 1;
     return (
-        <Container theme={theme} level={level} onClick={() => onJarClick(id)}>
+        <Container theme={theme} isFirstLevel={isFirstLevel} onClick={() => onJarClick(id)}>
             {
                 balls.map((ball) => {
                     let color: string;
-                    switch (ball.color) {
-                        case 'first':
+                    switch (ball.colorId) {
+                        case 1:
                             color = theme.balls.firstColor;
                             break;
-                        case 'second':
+                        case 2:
                             color = theme.balls.secondColor;
                             break;
-                        case 'third':
+                        case 3:
                             color = theme.balls.thirdColor;
                             break;
-                        case 'fourth':
+                        case 4:
                             color = theme.balls.fourthColor;
                             break;
-                        case 'fifth':
+                        case 5:
                             color = theme.balls.fifthColor;
                             break;
-                        case 'sixth':
+                        case 6:
                             color = theme.balls.sixthColor;
                             break;
-                        case 'seventh':
+                        case 7:
                             color = theme.balls.seventhColor;
                             break;
                         default:
                             throw Error("Color wasn't found");
                     }
 
-                    return <Ball
-                        level={level}
-                        theme={theme}
-                        key={ball.id}
-                        onClick={(e) => onBallClick(id, ball.id, e)}
-                        color={color}
-                        isSelected={ball.id === activeBallId} />
+                    if (isFirstLevel) {
+                        return <BigBall
+                            theme={theme}
+                            key={ball.id}
+                            onClick={(e) => onBallClick(id, ball.id, e)}
+                            color={color}
+                            isSelected={ball.id === activeBallId} />
+                    } else {
+                        return <SmallBall
+                            theme={theme}
+                            key={ball.id}
+                            onClick={(e) => onBallClick(id, ball.id, e)}
+                            color={color}
+                            isSelected={ball.id === activeBallId} />
+                    }
                 })
             }
         </Container>
@@ -57,18 +66,18 @@ const Container = styled.div`
     display: flex; 
     flex-direction: column-reverse;   
 
-    height: 230px;
-    width: 60px;
+    height: ${(props: IProps) => props.isFirstLevel ? '230px' : '200px'};
+    width: ${(props: IProps) => props.isFirstLevel ? '60px' : '46px'};
 
-    margin: 20px;
+    margin: 12px;
 
     background-color: ${(props: IProps) => props.theme.jars.background};
     border: 6px solid ${(props: IProps) => props.theme.jars.border};
     border-top: 3px solid  ${(props: IProps) => props.theme.jars.border};
-    border-radius: 0px 0px 25px 25px;
+    border-radius: 0px 0px ${(props: IProps) => props.isFirstLevel ? '25px 25px' : '20px 20px'};;
 `;
 
-const Ball = styled.div`
+const BigBall = styled.div`
     height: ${(props: IBallProps) => props.isSelected ? '42px' : '50px'};
     width: ${(props: IBallProps) => props.isSelected ? '42px' : '50px'};
 
@@ -81,6 +90,21 @@ const Ball = styled.div`
     border-style: solid;
 
     border-radius: 25px;
+`;
+
+const SmallBall = styled.div`
+    height: ${(props: IBallProps) => props.isSelected ? '34px' : '40px'};
+    width: ${(props: IBallProps) => props.isSelected ? '34px' : '40px'};
+
+    margin: 0px 3px 3px 3px;
+
+    background-color: ${(props: IBallProps) => props.color};
+
+    border-color: ${(props: IBallProps) => props.theme.balls.onSelectBorder};
+    border-width: ${(props: IBallProps) => props.isSelected ? '3px' : '0px'};
+    border-style: solid;
+
+    border-radius: 20px;
 `;
 
 export default Jar;

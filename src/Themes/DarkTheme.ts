@@ -26,6 +26,10 @@ const DarkTheme: ITheme = {
         sixthColor: 'mediumVioletRed',
         seventhColor: 'seaGreen',
         onSelectBorder: 'white',
+    },
+    modal: {
+        shadow: 'rgba(37, 37, 37, 0.3)',
+        background: 'darkCyan'
     }
 }
 

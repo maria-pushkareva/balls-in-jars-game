@@ -25,4 +25,8 @@ export interface ITheme {
         seventhColor: string,
         onSelectBorder: string,
     }
+    modal: {
+        shadow: string,
+        background: string
+    }
 }

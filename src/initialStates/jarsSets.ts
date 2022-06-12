@@ -3,7 +3,7 @@ import { IJar } from "../Components/interfaces";
 export const sixJarsSet = [
     {
         id: 101,
-        ballsId: [1, 11, 5]
+        ballsId: [1, 11, 5, 9]
     },
     {
         id: 102,
@@ -11,20 +11,20 @@ export const sixJarsSet = [
     },
     {
         id: 103,
-        ballsId: [2, 10, 14]
+        ballsId: [2, 10, 14, 4]
     },
     {
         id: 104,
-        ballsId: [16, 8, 3, 4]
+        ballsId: [16, 8, 3]
     },
-    {
-        id: 105,
-        ballsId: [9, 15]
-    },
-    {
-        id: 106,
-        ballsId: []
-    }
+    // {
+    //     id: 105,
+    //     // ballsId: [9, 15]
+    // },
+    // {
+    //     id: 106,
+    //     ballsId: []
+    // }
 ]
 
 export const nineJarSet = [

@@ -2,183 +2,182 @@ import { IBall } from "../Components/interfaces"
 
 export const sixteenBallsSet: Array<IBall> = [
     {
-        color: "first",
+        colorId: 1,
         id: 1
     },
-
     {
-        color: "first",
+        colorId: 1,
         id: 2
     },
     {
-        color: "first",
+        colorId: 1,
         id: 3
     },
     {
-        color: "first",
+        colorId: 1,
         id: 4
     },
     {
-        color: "second",
+        colorId: 2,
         id: 5
     },
     {
-        color: "second",
+        colorId: 2,
         id: 6
     },
     {
-        color: "second",
+        colorId: 2,
         id: 7
     },
     {
-        color: "second",
+        colorId: 2,
         id: 8
     },
     {
-        color: "third",
+        colorId: 3,
         id: 9
     },
     {
-        color: "third",
+        colorId: 3,
         id: 10
     },
     {
-        color: "third",
+        colorId: 3,
         id: 11
     },
     {
-        color: "third",
+        colorId: 3,
         id: 12
     },
     {
-        color: "fourth",
+        colorId: 4,
         id: 13
     },
     {
-        color: "fourth",
+        colorId: 4,
         id: 14
     },
     {
-        color: "fourth",
+        colorId: 4,
         id: 15
     },
     {
-        color: "fourth",
+        colorId: 4,
         id: 16
     }
 ]
 
 export const twentyEightBallsSet: Array<IBall> = [
     {
-        color: "first",
+        colorId: 1,
         id: 1
     },
     {
-        color: "first",
+        colorId: 1,
         id: 2
     },
     {
-        color: "first",
+        colorId: 1,
         id: 3
     },
     {
-        color: "first",
+        colorId: 1,
         id: 4
     },
     {
-        color: "second",
+        colorId: 2,
         id: 5
     },
     {
-        color: "second",
+        colorId: 2,
         id: 6
     },
     {
-        color: "second",
+        colorId: 2,
         id: 7
     },
     {
-        color: "second",
+        colorId: 2,
         id: 8
     },
     {
-        color: "third",
+        colorId: 3,
         id: 9
     },
     {
-        color: "third",
+        colorId: 3,
         id: 10
     },
     {
-        color: "third",
+        colorId: 3,
         id: 11
     },
     {
-        color: "third",
+        colorId: 3,
         id: 12
     },
     {
-        color: "fourth",
+        colorId: 4,
         id: 13
     },
     {
-        color: "fourth",
+        colorId: 4,
         id: 14
     },
     {
-        color: "fourth",
+        colorId: 4,
         id: 15
     },
     {
-        color: "fourth",
+        colorId: 4,
         id: 16
     },
     {
-        color: "fifth",
+        colorId: 5,
         id: 17
     },
     {
-        color: "fifth",
+        colorId: 5,
         id: 18
     },
     {
-        color: "fifth",
+        colorId: 5,
         id: 19
     },
     {
-        color: "fifth",
+        colorId: 5,
         id: 20
     },
     {
-        color: "sixth",
+        colorId: 6,
         id: 21
     },
     {
-        color: "sixth",
+        colorId: 6,
         id: 22
     },
     {
-        color: "sixth",
+        colorId: 6,
         id: 23
     },
     {
-        color: "sixth",
+        colorId: 6,
         id: 24
     },
     {
-        color: "seventh",
+        colorId: 7,
         id: 25
     },
     {
-        color: "seventh",
+        colorId: 7,
         id: 26
     },
     {
-        color: "seventh",
+        colorId: 7,
         id: 27
     },
     {
-        color: "seventh",
+        colorId: 7,
         id: 28
     }
 ]

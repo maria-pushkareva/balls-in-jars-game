@@ -9,6 +9,8 @@ import styled from 'styled-components';
 import Toolbar from './Components/Toolbar';
 import DarkTheme from './Themes/DarkTheme';
 import LightTheme from './Themes/LightTheme';
+import { off } from 'process';
+import Modal from './Components/Modal';
 
 export default class App extends React.Component<any, IState> {
 
@@ -24,7 +26,13 @@ export default class App extends React.Component<any, IState> {
             previousJarsState: null,
             moveCount: 0,
             jars: [],
-            balls: []
+            balls: [],
+            canMakeSteps: true,
+            showModal: false,
+            modal: {
+                type: 'won',
+                text: 'Hey, it is modal'
+            }
         };
     }
 
@@ -92,7 +100,7 @@ export default class App extends React.Component<any, IState> {
                 const ballsNumber = clickedJar.ballsId.length;
                 const topBallId = clickedJar.ballsId[ballsNumber - 1];
                 const topBall = balls.find(({ id }) => id === topBallId);
-                if (topBall?.color === activeBall.color) {
+                if (topBall?.colorId === activeBall.colorId) {
                     canMove = true;
                 }
             }
@@ -139,10 +147,10 @@ export default class App extends React.Component<any, IState> {
                 isWin = false;
             }
             else if (jar.ballsId.length === 4) {
-                const firstBallColor = this.findBall(jar.ballsId[0]).color;
+                const firstBallColor = this.findBall(jar.ballsId[0]).colorId;
 
                 jar.ballsId.forEach((ballId) => {
-                    const ballColor = this.findBall(ballId).color;
+                    const ballColor = this.findBall(ballId).colorId;
                     if (ballColor !== firstBallColor) {
                         isWin = false;
                     }
@@ -155,21 +163,41 @@ export default class App extends React.Component<any, IState> {
                 this.setState({ state: 'win' });
             }, 500)
         } else {
-            // this.checkIfLost(jars);
+            this.checkIfLost(jars);
         }
     }
 
-    // public checkIfLost = (jars: Array<IJar>): void => {
-    //     let canMakeSteps = false;
-    //     jars.forEach((jar) => {
-    //         const length = jar.ballsId.length;
-    //         if (length === 1) {
-    //             canMakeSteps = true;
-    //         } else {
+    public checkIfLost = (jars: Array<IJar>): void => {
+        let canMakeSteps = false;
+        const availableColors: Array<number> = [];
 
-    //         }
-    //     })
-    // }
+        jars.forEach((jar) => {
+            const length = jar.ballsId.length;
+            const topBall = this.findBall(jar.ballsId[length - 1]);
+            console.log(length, topBall.colorId)
+            if (length === 0) {
+                canMakeSteps = true;
+            }
+            const index = availableColors.indexOf(topBall.colorId);
+            if (index !== -1) {
+                canMakeSteps = true;
+            }
+
+            if (length < 4) {
+                availableColors.push(topBall.colorId);
+            }
+        });
+
+        if (!canMakeSteps) {
+            this.setState({
+                showModal: true,
+                modal: {
+                    text: 'You lost!',
+                    type: 'lost'
+                }
+            });
+        }
+    }
 
     public handleBackStep = (): void => {
         const { previousJarsState } = this.state;
@@ -203,8 +231,14 @@ export default class App extends React.Component<any, IState> {
         })
     }
 
+    public dismissModal = (): void => {
+        this.setState({
+            showModal: false
+        })
+    }
+
     render() {
-        const { state, theme, level, balls, jars, activeBallId, moveCount, previousJarsState } = this.state;
+        const { state, theme, level, balls, jars, activeBallId, moveCount, previousJarsState, showModal, modal } = this.state;
 
         return (
             <Background id={"main-container"} theme={theme}>
@@ -248,6 +282,26 @@ export default class App extends React.Component<any, IState> {
                             </MessageContainer>
                         }
                     </Field>
+                    {showModal &&
+                        <Modal
+                            theme={theme}
+                            text={modal.text}
+                            onDismiss={this.dismissModal}
+                            buttons={[
+                                {
+                                    text: 'Click',
+                                    onClick: () => {
+                                        console.log('clicked')
+                                    }
+                                },
+                                {
+                                    text: 'Click2',
+                                    onClick: () => {
+                                        console.log('clicked2')
+                                    }
+                                }
+                            ]} />
+                    }
                 </MainContainer>
             </Background>
         );
@@ -316,7 +370,7 @@ const ChoseLevelButton = styled.button`
 
     margin: 20px;
 
-    border: 5px solid ${(props: IBasicProps) => props.theme.accents};
+    border: 3px solid ${(props: IBasicProps) => props.theme.accents};
     border-radius: 10px;
 
     background-color: ${(props: IBasicProps) => props.theme.toolbar.background};
