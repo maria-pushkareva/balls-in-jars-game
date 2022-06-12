@@ -1,35 +1,42 @@
 import { ITheme } from "./ITheme";
+const light = '#F0FAF9';
+const medium = '#C1DFE1';
+const accents = '#5EA1B6';
 
 const LightTheme: ITheme = {
-    background: "darkGray",
-    font: 'teal',
-    accents: 'lightSteelBlue',
+    background: 'rgba(192, 192, 192, 1)',
+    font: '#17708C',
+    accents: accents,
     title: {
-        background: 'azure',
+        background: medium,
     },
     toolbar: {
-        background: 'lavender',
+        background: light,
     },
     field: {
-        background: 'azure',
+        background: light,
     },
     jars: {
-        background: 'lightSteelBlue',
-        border: 'lightSlateGrey'
+        background: '#D9E6EC',
+        border: '#7D9EC8'
     },
     balls: {
-        firstColor: 'salmon',
-        secondColor: 'steelBlue',
-        thirdColor: 'gold',
-        fourthColor: 'paleVioletRed',
-        fifthColor: 'deepSkyBlue',
-        sixthColor: 'mediumOrchid',
-        seventhColor: 'yellowGreen',
+        firstColor: '#FF5794',
+        secondColor: '#C751FF',
+        thirdColor: '#FBFF42',
+        fourthColor: '#00A0C3',
+        fifthColor: '#90C948',
+        sixthColor: '#F55F2F',
+        seventhColor: '#636FE3',
         onSelectBorder: 'white',
     },
     modal: {
-        shadow: 'rgba(169,169,169, 0.3)',
-        background: 'lavender',
+        shadow: 'rgba(192, 192, 192, 0.7)',
+        background: medium,
+    },
+    button: {
+        light: medium,
+        dark: medium
     }
 }
 

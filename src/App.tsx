@@ -11,6 +11,7 @@ import DarkTheme from './Themes/DarkTheme';
 import LightTheme from './Themes/LightTheme';
 import { off } from 'process';
 import Modal from './Components/Modal';
+import Button from './Components/Button';
 
 export default class App extends React.Component<any, IState> {
 
@@ -18,7 +19,7 @@ export default class App extends React.Component<any, IState> {
         super(props);
 
         this.state = {
-            state: 'beginning',
+            state: 'start',
             level: 1,
             theme: DarkTheme,
             activeBallId: null,
@@ -27,7 +28,6 @@ export default class App extends React.Component<any, IState> {
             moveCount: 0,
             jars: [],
             balls: [],
-            canMakeSteps: true,
             showModal: false,
             modal: {
                 type: 'won',
@@ -50,6 +50,35 @@ export default class App extends React.Component<any, IState> {
             previousJarsState: null,
             moveCount: 0,
             jars: level === 1 ? sixJarsSet : nineJarSet,
+            showModal: false
+        })
+    }
+
+    public startFirstLevel = (): void => {
+        this.setState({
+            state: 'game',
+            level: 1,
+            activeBallId: null,
+            activeJarId: null,
+            previousJarsState: null,
+            moveCount: 0,
+            jars: sixJarsSet,
+            balls: sixteenBallsSet,
+            showModal: false
+        })
+    }
+
+    public startSecondLevel = (): void => {
+        this.setState({
+            state: 'game',
+            level: 2,
+            activeBallId: null,
+            activeJarId: null,
+            previousJarsState: null,
+            moveCount: 0,
+            jars: nineJarSet,
+            balls: twentyEightBallsSet,
+            showModal: false
         })
     }
 
@@ -64,7 +93,7 @@ export default class App extends React.Component<any, IState> {
     private findBall = (ballId: number): IBall => {
         const ball = this.state.balls.find(({ id }) => ballId === id);
         if (typeof ball === 'undefined') {
-            throw Error("Can't find jar by id");
+            throw Error("Can't find ball by id");
         }
         return ball;
     }
@@ -160,8 +189,14 @@ export default class App extends React.Component<any, IState> {
 
         if (isWin) {
             setTimeout(() => {
-                this.setState({ state: 'win' });
-            }, 500)
+                this.setState({
+                    showModal: true,
+                    modal: {
+                        text: 'You won!',
+                        type: 'won'
+                    }
+                });
+            }, 300)
         } else {
             this.checkIfLost(jars);
         }
@@ -173,29 +208,32 @@ export default class App extends React.Component<any, IState> {
 
         jars.forEach((jar) => {
             const length = jar.ballsId.length;
-            const topBall = this.findBall(jar.ballsId[length - 1]);
-            console.log(length, topBall.colorId)
+
             if (length === 0) {
                 canMakeSteps = true;
-            }
-            const index = availableColors.indexOf(topBall.colorId);
-            if (index !== -1) {
-                canMakeSteps = true;
-            }
-
-            if (length < 4) {
-                availableColors.push(topBall.colorId);
+            } else {
+                const topBall = this.findBall(jar.ballsId[length - 1]);
+                const index = availableColors.indexOf(topBall.colorId);
+                if (index !== -1) {
+                    canMakeSteps = true;
+                }
+    
+                if (length < 4) {
+                    availableColors.push(topBall.colorId);
+                }
             }
         });
 
         if (!canMakeSteps) {
-            this.setState({
-                showModal: true,
-                modal: {
-                    text: 'You lost!',
-                    type: 'lost'
-                }
-            });
+            setTimeout(() => {
+                this.setState({
+                    showModal: true,
+                    modal: {
+                        text: 'You lost!',
+                        type: 'lost'
+                    }
+                });
+            }, 300)
         }
     }
 
@@ -247,11 +285,13 @@ export default class App extends React.Component<any, IState> {
                         {"SORT BALLS PUZZLE"}
                     </CustomTitle>
                     <Field theme={theme}>
-                        {state === 'beginning' &&
+                        {state === 'start' &&
                             <MessageContainer>
                                 <div>{'Lets start a game!'}</div>
-                                <ChoseLevelButton theme={theme} onClick={this.choseFirstLevel}>{'EASY'}</ChoseLevelButton>
-                                <ChoseLevelButton theme={theme} onClick={this.choseSecondLevel}>{'MIDDLE'}</ChoseLevelButton>
+                                <Button theme={theme} light={true} text={'EASY'} onClick={this.startFirstLevel}/>
+                                <Button theme={theme} light={true} text={'MEDIUM'} onClick={this.startSecondLevel}/>
+                                {/* <ChoseLevelButton theme={theme} onClick={this.choseFirstLevel}>{'EASY'}</ChoseLevelButton>
+                                <ChoseLevelButton theme={theme} onClick={this.choseSecondLevel}>{'MEDIUM'}</ChoseLevelButton> */}
                             </MessageContainer>
                         }
                         {state === 'game' &&
@@ -276,11 +316,6 @@ export default class App extends React.Component<any, IState> {
                                 />
                             </>
                         }
-                        {state === 'win' &&
-                            <MessageContainer>
-                                <div>{`Hey, you did it in ${moveCount} steps!`}</div>
-                            </MessageContainer>
-                        }
                     </Field>
                     {showModal &&
                         <Modal
@@ -289,18 +324,15 @@ export default class App extends React.Component<any, IState> {
                             onDismiss={this.dismissModal}
                             buttons={[
                                 {
-                                    text: 'Click',
-                                    onClick: () => {
-                                        console.log('clicked')
-                                    }
+                                    text: modal.type === 'won' ? 'Play again' : 'Try again',
+                                    onClick: level === 1 ? this.startFirstLevel : this.startSecondLevel
                                 },
                                 {
-                                    text: 'Click2',
-                                    onClick: () => {
-                                        console.log('clicked2')
-                                    }
+                                    text: modal.type === 'won' ? 'Play other level' : 'Try other level',
+                                    onClick: level === 1 ? this.startSecondLevel : this.startFirstLevel
                                 }
-                            ]} />
+                            ]}
+                        />
                     }
                 </MainContainer>
             </Background>
@@ -339,6 +371,8 @@ const CustomTitle = styled.div`
 
     color: ${(props: IBasicProps) => props.theme.font};
     background-color: ${(props: IBasicProps) => props.theme.title.background};
+
+    border-bottom: 3px solid ${(props: IBasicProps) => props.theme.accents};
 `
 
 const MessageContainer = styled.div`

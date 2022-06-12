@@ -66,7 +66,7 @@ const Container = styled.div`
     display: flex; 
     flex-direction: column-reverse;   
 
-    height: ${(props: IProps) => props.isFirstLevel ? '230px' : '200px'};
+    height: ${(props: IProps) => props.isFirstLevel ? '230px' : '180px'};
     width: ${(props: IProps) => props.isFirstLevel ? '60px' : '46px'};
 
     margin: 12px;

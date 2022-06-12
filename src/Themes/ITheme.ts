@@ -28,5 +28,9 @@ export interface ITheme {
     modal: {
         shadow: string,
         background: string
-    }
+    },
+    button: {
+        light: string,
+        dark: string,
+    }   
 }

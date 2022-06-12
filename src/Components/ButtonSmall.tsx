@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import { IBasicProps, IButtonProps } from "./interfaces";
+import { IBasicProps, IButtonProps, IButtonSmallProps } from "./interfaces";
 
 
 interface IStyledProps extends IBasicProps {
     light: boolean;
 }
-const Button = (props: IButtonProps) => {
+const ButtonSmall = (props: IButtonSmallProps) => {
     const { text, theme, onClick, light } = props;
     console.log(light);
     return <StyledButton theme={theme} light={light} onClick={onClick}>{text}</StyledButton>
@@ -13,10 +13,9 @@ const Button = (props: IButtonProps) => {
 
 
 const StyledButton = styled.button`
-    height: 50px;
-    width: 100px;
+    height: 30px;
 
-    margin: 10px 20px;
+    margin: 10px 5px;
 
     border: 3px solid ${(props: IStyledProps) => props.theme.accents};
     border-radius: 10px;
@@ -28,4 +27,4 @@ const StyledButton = styled.button`
     background-color: ${(props: IStyledProps) => props.light ? props.theme.button.light : props.theme.button.dark};
     color: ${(props: IStyledProps) => props.theme.font}
 `
-export default Button;
+export default ButtonSmall;

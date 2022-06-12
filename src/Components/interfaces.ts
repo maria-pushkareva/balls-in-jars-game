@@ -7,7 +7,7 @@ export interface IBasicProps {
 }
 
 export interface IState {
-    state: 'beginning' | 'game' | 'win'
+    state: 'start' | 'game'
     theme: ITheme,
     level: 1 | 2,
     activeBallId: number | null,
@@ -16,7 +16,6 @@ export interface IState {
     previousJarsState: Array<IJar> | null,
     jars: Array<IJar>,
     balls: Array<IBall>,
-    canMakeSteps: boolean,
     showModal: boolean,
     modal: {
         type: 'lost' | 'won',
@@ -78,6 +77,13 @@ export interface IModalProps extends IBasicProps {
 
 export interface IButtonProps extends IBasicProps {
     text: string;
+    light: boolean;
+    onClick: () => void;
+}
+
+export interface IButtonSmallProps extends IBasicProps {
+    text: string,
+    light: boolean;
     onClick: () => void;
 }
 

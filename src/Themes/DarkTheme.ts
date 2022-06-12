@@ -1,35 +1,43 @@
 import { ITheme } from "./ITheme";
 
+const dark = '#1A3D3B';
+const medium = '#008A8A';
+const light = '#B0C4DE';
+
 const DarkTheme: ITheme = {
-    background: "#252525",
+    background: 'rgba(37, 37, 37, 1)',
     font: 'white',
-    accents: 'lightSteelBlue',
+    accents: light,
     title: {
-        background: 'darkSlateGrey',
+        background: medium,
     },
     toolbar: {
-        background: 'darkCyan',
+        background: dark,
     },
     field: {
-        background: 'darkSlateGrey',
+        background: dark,
     },
     jars: {
-        background: 'lightSlateGrey',
-        border: 'lightSteelBlue'
+        background: '#274A4A',
+        border: light
     },
     balls: {
-        firstColor: 'coral',
-        secondColor: 'indigo',
-        thirdColor: 'moccasin',
-        fourthColor: 'indianRed',
-        fifthColor: 'dodgerblue',
-        sixthColor: 'mediumVioletRed',
-        seventhColor: 'seaGreen',
+        firstColor: '#FF9CAB',
+        secondColor: '#A090FF',
+        thirdColor: '#FDFF97',
+        fourthColor: '#80FFF0',
+        fifthColor: '#BCFFA5',
+        sixthColor: '#FFB199',
+        seventhColor: '#88C6FF',
         onSelectBorder: 'white',
     },
     modal: {
-        shadow: 'rgba(37, 37, 37, 0.3)',
-        background: 'darkCyan'
+        shadow: 'rgba(37, 37, 37, 0.7)',
+        background: medium
+    },
+    button: {
+        light: medium,
+        dark: dark
     }
 }
 
