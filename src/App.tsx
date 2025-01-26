@@ -54,6 +54,11 @@ export default class App extends React.Component<any, IState> {
         })
     }
 
+    public switchLevel = (): void => {
+        const { level } = this.state;
+        level === 1 ? this.startSecondLevel() : this.startFirstLevel();
+    }
+
     public startFirstLevel = (): void => {
         this.setState({
             state: 'game',
@@ -192,7 +197,7 @@ export default class App extends React.Component<any, IState> {
                 this.setState({
                     showModal: true,
                     modal: {
-                        text: 'You won!',
+                        text: `You did it in ${this.state.moveCount} steps!`,
                         type: 'won'
                     }
                 });
@@ -251,24 +256,6 @@ export default class App extends React.Component<any, IState> {
         }
     }
 
-    public choseFirstLevel = (): void => {
-        this.setState({
-            level: 1,
-            state: 'game',
-            jars: sixJarsSet,
-            balls: sixteenBallsSet
-        })
-    }
-
-    public choseSecondLevel = (): void => {
-        this.setState({
-            level: 2,
-            state: 'game',
-            jars: nineJarSet,
-            balls: twentyEightBallsSet
-        })
-    }
-
     public dismissModal = (): void => {
         this.setState({
             showModal: false
@@ -287,11 +274,11 @@ export default class App extends React.Component<any, IState> {
                     <Field theme={theme}>
                         {state === 'start' &&
                             <MessageContainer>
-                                <div>{'Lets start a game!'}</div>
-                                <Button theme={theme} light={true} text={'EASY'} onClick={this.startFirstLevel}/>
-                                <Button theme={theme} light={true} text={'MEDIUM'} onClick={this.startSecondLevel}/>
-                                {/* <ChoseLevelButton theme={theme} onClick={this.choseFirstLevel}>{'EASY'}</ChoseLevelButton>
-                                <ChoseLevelButton theme={theme} onClick={this.choseSecondLevel}>{'MEDIUM'}</ChoseLevelButton> */}
+                                <div style={{ fontSize: '30px', margin: '10px' }}>{'Lets start!'}</div>
+                                <ButtonsContainer>
+                                    <Button theme={theme} light={true} text={'EASY'} onClick={this.startFirstLevel} />
+                                    <Button theme={theme} light={true} text={'MEDIUM'} onClick={this.startSecondLevel} />
+                                </ButtonsContainer>
                             </MessageContainer>
                         }
                         {state === 'game' &&
@@ -303,6 +290,7 @@ export default class App extends React.Component<any, IState> {
                                     onBackClick={this.handleBackStep}
                                     onThemeToggle={this.toggleTheme}
                                     reset={this.reset}
+                                    switchLevel={this.switchLevel}
                                     isBackActive={previousJarsState !== null}
                                 />
                                 <GameField
@@ -398,14 +386,7 @@ const Field = styled.div`
     background-color: ${(props: IBasicProps) => props.theme.field.background};
 `
 
-const ChoseLevelButton = styled.button`
-    height: 50px;
-    width: 100px;
-
-    margin: 20px;
-
-    border: 3px solid ${(props: IBasicProps) => props.theme.accents};
-    border-radius: 10px;
-
-    background-color: ${(props: IBasicProps) => props.theme.toolbar.background};
+const ButtonsContainer = styled.div`
+    margin: 10px;
 `
+

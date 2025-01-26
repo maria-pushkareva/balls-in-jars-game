@@ -1,19 +1,22 @@
 import styled from "styled-components";
+import Utils from "../Utils/Utils";
 import { IBasicProps, IButtonProps, IButtonSmallProps } from "./interfaces";
 
 
 interface IStyledProps extends IBasicProps {
     light: boolean;
+    isDisabled: boolean;
 }
 const ButtonSmall = (props: IButtonSmallProps) => {
-    const { text, theme, onClick, light } = props;
-    console.log(light);
-    return <StyledButton theme={theme} light={light} onClick={onClick}>{text}</StyledButton>
+    const { text, theme, onClick, light, disabled } = props;
+
+    return <StyledButton theme={theme} light={light} onClick={onClick} isDisabled={!Utils.isTrueOrUndefined(disabled)}>{text}</StyledButton>
 }
 
 
 const StyledButton = styled.button`
     height: 30px;
+    width: 60px;
 
     margin: 10px 5px;
 

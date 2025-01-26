@@ -66,7 +66,8 @@ export interface IToolbarProps extends IBasicProps {
     isBackActive: boolean,
     onThemeToggle: () => void,
     onBackClick: () => void,
-    reset: () => void
+    reset: () => void,
+    switchLevel: () => void
 }
 
 export interface IModalProps extends IBasicProps {
@@ -82,6 +83,7 @@ export interface IButtonProps extends IBasicProps {
 }
 
 export interface IButtonSmallProps extends IBasicProps {
+    disabled?: boolean,
     text: string,
     light: boolean;
     onClick: () => void;

@@ -15,6 +15,7 @@ const Modal = (props: IModalProps) => {
             <ButtonsContainer>
                 {buttons.map((button) => {
                     return <Button
+                        key={button.text}
                         light={false}
                         theme={theme}
                         onClick={button.onClick}
