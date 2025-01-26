@@ -1,14 +1,6 @@
-import { VoidExpression } from "typescript";
-import { ITheme } from "../Themes/ITheme";
-
-
-export interface IBasicProps {
-    theme: ITheme
-}
-
 export interface IState {
     state: 'start' | 'game'
-    theme: ITheme,
+    themeName: ThemeName,
     level: 1 | 2,
     activeBallId: number | null,
     activeJarId: number | null,
@@ -31,7 +23,7 @@ export interface IJar {
     // color?: string;
 }
 
-export interface IJarProps extends IBasicProps {
+export interface IJarProps {
     id: number;
     level: 1 | 2,
     balls: Array<IBall>;
@@ -46,12 +38,12 @@ export interface IBall {
     color?: string;
 }
 
-export interface IBallProps extends IBasicProps {
+export interface IBallProps {
     color: string;
     isSelected: boolean;
 }
 
-export interface IGameFieldProps extends IBasicProps {
+export interface IGameFieldProps {
     level: 1 | 2,
     jars: Array<IJar>,
     balls: Array<IBall>,
@@ -60,29 +52,30 @@ export interface IGameFieldProps extends IBasicProps {
     onJarClick: (jarId: number) => void;
 }
 
-export interface IToolbarProps extends IBasicProps {
+export interface IToolbarProps {
     level: 1 | 2,
     moveCount: number,
     isBackActive: boolean,
+    themeName: ThemeName,
     onThemeToggle: () => void,
     onBackClick: () => void,
     reset: () => void,
     switchLevel: () => void
 }
 
-export interface IModalProps extends IBasicProps {
+export interface IModalProps {
     text: string;
     buttons: Array<IButton>;
     onDismiss: () => void;
 }
 
-export interface IButtonProps extends IBasicProps {
+export interface IButtonProps {
     text: string;
     light: boolean;
     onClick: () => void;
 }
 
-export interface IButtonSmallProps extends IBasicProps {
+export interface IButtonSmallProps {
     disabled?: boolean,
     text: string,
     light: boolean;
@@ -92,4 +85,9 @@ export interface IButtonSmallProps extends IBasicProps {
 export interface IButton {
     text: string;
     onClick: () => void;
+}
+
+export enum ThemeName {
+    Dark = 'dark',
+    Light = 'light'
 }

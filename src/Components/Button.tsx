@@ -1,14 +1,16 @@
 import styled from "styled-components";
-import { IBasicProps, IButtonProps } from "./interfaces";
+import { IButtonProps } from "./interfaces";
+import { CssVarUtils } from "../styles/CssVariablesUtils";
+import { FunctionalVariables } from "../styles/ICssVariables";
 
 
-interface IStyledProps extends IBasicProps {
+interface IStyledProps {
     light: boolean;
 }
 const Button = (props: IButtonProps) => {
-    const { text, theme, onClick, light } = props;
+    const { text, onClick, light } = props;
     console.log(light);
-    return <StyledButton theme={theme} light={light} onClick={onClick}>{text}</StyledButton>
+    return <StyledButton light={light} onClick={onClick}>{text}</StyledButton>
 }
 
 
@@ -18,14 +20,14 @@ const StyledButton = styled.button`
 
     margin: 10px 20px;
 
-    border: 3px solid ${(props: IStyledProps) => props.theme.accents};
+    border: 3px solid ${CssVarUtils.getVar(FunctionalVariables.AccentsColor)};
     border-radius: 10px;
 
     font-family: impact;
 
     cursor: pointer;
 
-    background-color: ${(props: IStyledProps) => props.light ? props.theme.button.light : props.theme.button.dark};
-    color: ${(props: IStyledProps) => props.theme.font}
+    background-color: ${(props: IStyledProps) => props.light ? CssVarUtils.getVar(FunctionalVariables.ButtonLightBackgroundColor) : CssVarUtils.getVar(FunctionalVariables.ButtonDarkBackgroundColor)};
+    color: ${CssVarUtils.getVar(FunctionalVariables.FontColor)}
 `
 export default Button;

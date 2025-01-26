@@ -1,12 +1,13 @@
-import React from "react"
 import styled from "styled-components";
 import Button from "./Button";
-import { IBasicProps, IModalProps } from "./interfaces";
+import { IModalProps } from "./interfaces";
+import { FunctionalVariables } from "../styles/ICssVariables";
+import { CssVarUtils } from "../styles/CssVariablesUtils";
 
 const Modal = (props: IModalProps) => {
-    const { theme, text, buttons, onDismiss } = props;
-    return <ModalShadow theme={theme}>
-        <ModalContainer theme={theme}>
+    const { text, buttons, onDismiss } = props;
+    return <ModalShadow>
+        <ModalContainer>
             <DismissButton onClick={onDismiss}>{'x'}</DismissButton>
             <ModalBody className="modal-body">
                 <TextContainer>{text}</TextContainer>
@@ -17,7 +18,6 @@ const Modal = (props: IModalProps) => {
                     return <Button
                         key={button.text}
                         light={false}
-                        theme={theme}
                         onClick={button.onClick}
                         text={button.text}
                     />
@@ -39,8 +39,8 @@ const ModalShadow = styled.div`
     justify-content: center;
 
     
-    background-color: ${(props: IBasicProps) => props.theme.modal.shadow};
-    color: ${(props: IBasicProps) => props.theme.font};
+    background-color: ${CssVarUtils.getVar(FunctionalVariables.ModalShadow)};
+    color: ${CssVarUtils.getVar(FunctionalVariables.FontColor)};
 `
 
 const ModalContainer = styled.div`
@@ -48,9 +48,9 @@ const ModalContainer = styled.div`
     height: 200px;
     width: 280px;
 
-    background-color: ${(props: IBasicProps) => props.theme.modal.background};
+    background-color: ${CssVarUtils.getVar(FunctionalVariables.ModalBackgroundColor)};
 
-    border: 3px solid ${(props: IBasicProps) => props.theme.accents};
+    border: 3px solid ${CssVarUtils.getVar(FunctionalVariables.AccentsColor)};
     border-radius: 10px;
 `
 

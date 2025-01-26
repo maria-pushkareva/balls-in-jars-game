@@ -1,9 +1,9 @@
 import styled from "styled-components"
-import { IBall, IBasicProps, IGameFieldProps, IJar } from "./interfaces"
+import { IBall, IGameFieldProps } from "./interfaces"
 import Jar from "./Jar"
 
 const GameField = (props: IGameFieldProps) => {
-    const { theme, level, balls, jars, activeBallId, onBallClick, onJarClick } = props;
+    const { level, balls, jars, activeBallId, onBallClick, onJarClick } = props;
 
     return (
         <GameFieldContainer>
@@ -17,7 +17,7 @@ const GameField = (props: IGameFieldProps) => {
                         }
                         ballsInJar.push(ball);
                     })
-                    return <Jar level={level} theme={theme} key={id} onBallClick={onBallClick} onJarClick={onJarClick} id={id} balls={ballsInJar} activeBallId={activeBallId} />
+                    return <Jar level={level} key={id} onBallClick={onBallClick} onJarClick={onJarClick} id={id} balls={ballsInJar} activeBallId={activeBallId} />
                 })
             }
         </GameFieldContainer>

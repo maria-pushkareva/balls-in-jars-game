@@ -1,41 +1,41 @@
-import { IBallProps, IBasicProps, IJarProps } from './interfaces';
+import { IBallProps, IJarProps } from './interfaces';
 import styled from "styled-components";
-import { ITheme } from '../Themes/ITheme';
+import { CssVarUtils } from '../styles/CssVariablesUtils';
+import { FunctionalVariables } from '../styles/ICssVariables';
 
 interface IProps {
-    theme: ITheme,
     isFirstLevel: boolean,
 }
 
 const Jar = (props: IJarProps) => {
-    const { theme, level, id, balls, activeBallId, onBallClick, onJarClick } = props;
+    const { level, id, balls, activeBallId, onBallClick, onJarClick } = props;
     const isFirstLevel = level === 1;
     return (
-        <Container theme={theme} isFirstLevel={isFirstLevel} onClick={() => onJarClick(id)}>
+        <Container isFirstLevel={isFirstLevel} onClick={() => onJarClick(id)}>
             {
                 balls.map((ball) => {
                     let color: string;
                     switch (ball.colorId) {
                         case 1:
-                            color = theme.balls.firstColor;
+                            color = CssVarUtils.getVar(FunctionalVariables.BallFirstColor);
                             break;
                         case 2:
-                            color = theme.balls.secondColor;
+                            color = CssVarUtils.getVar(FunctionalVariables.BallSecondColor);
                             break;
                         case 3:
-                            color = theme.balls.thirdColor;
+                            color = CssVarUtils.getVar(FunctionalVariables.BallThirdColor);
                             break;
                         case 4:
-                            color = theme.balls.fourthColor;
+                            color = CssVarUtils.getVar(FunctionalVariables.BallFourthColor);
                             break;
                         case 5:
-                            color = theme.balls.fifthColor;
+                            color = CssVarUtils.getVar(FunctionalVariables.BallFifthColor);
                             break;
                         case 6:
-                            color = theme.balls.sixthColor;
+                            color = CssVarUtils.getVar(FunctionalVariables.BallSixthColor);
                             break;
                         case 7:
-                            color = theme.balls.seventhColor;
+                            color = CssVarUtils.getVar(FunctionalVariables.BallSeventhColor);
                             break;
                         default:
                             throw Error("Color wasn't found");
@@ -43,14 +43,12 @@ const Jar = (props: IJarProps) => {
 
                     if (isFirstLevel) {
                         return <BigBall
-                            theme={theme}
                             key={ball.id}
                             onClick={(e) => onBallClick(id, ball.id, e)}
                             color={color}
                             isSelected={ball.id === activeBallId} />
                     } else {
                         return <SmallBall
-                            theme={theme}
                             key={ball.id}
                             onClick={(e) => onBallClick(id, ball.id, e)}
                             color={color}
@@ -71,9 +69,9 @@ const Container = styled.div`
 
     margin: 12px;
 
-    background-color: ${(props: IProps) => props.theme.jars.background};
-    border: 6px solid ${(props: IProps) => props.theme.jars.border};
-    border-top: 3px solid  ${(props: IProps) => props.theme.jars.border};
+    background-color: ${CssVarUtils.getVar(FunctionalVariables.JarsBackgroundColor)};
+    border: 6px solid ${CssVarUtils.getVar(FunctionalVariables.JarsBorderColor)};
+    border-top: 3px solid  ${CssVarUtils.getVar(FunctionalVariables.JarsBorderColor)};
     border-radius: 0px 0px ${(props: IProps) => props.isFirstLevel ? '25px 25px' : '20px 20px'};;
 `;
 
@@ -85,7 +83,7 @@ const BigBall = styled.div`
 
     background-color: ${(props: IBallProps) => props.color};
 
-    border-color: ${(props: IBallProps) => props.theme.balls.onSelectBorder};
+    border-color: ${CssVarUtils.getVar(FunctionalVariables.BallOnSelectBorderColor)};
     border-width: ${(props: IBallProps) => props.isSelected ? '4px' : '0px'};
     border-style: solid;
 
@@ -100,7 +98,7 @@ const SmallBall = styled.div`
 
     background-color: ${(props: IBallProps) => props.color};
 
-    border-color: ${(props: IBallProps) => props.theme.balls.onSelectBorder};
+    border-color: ${CssVarUtils.getVar(FunctionalVariables.BallOnSelectBorderColor)};
     border-width: ${(props: IBallProps) => props.isSelected ? '3px' : '0px'};
     border-style: solid;
 

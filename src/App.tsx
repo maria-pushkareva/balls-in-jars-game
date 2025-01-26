@@ -2,16 +2,17 @@ import React from 'react';
 import './App.css';
 import _ from 'lodash';
 import GameField from './Components/GameField';
-import { IBall, IBasicProps, IJar, IState } from './Components/interfaces';
+import { IBall, IJar, IState, ThemeName } from './Components/interfaces';
 import { sixteenBallsSet, twentyEightBallsSet } from './initialStates/ballsSets';
 import { nineJarSet, sixJarsSet } from './initialStates/jarsSets';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 import Toolbar from './Components/Toolbar';
-import DarkTheme from './Themes/DarkTheme';
-import LightTheme from './Themes/LightTheme';
-import { off } from 'process';
 import Modal from './Components/Modal';
 import Button from './Components/Button';
+import { FunctionalVariablesLightComponent } from './styles/FunctionalVariablesLight';
+import { FunctionalVariablesDarkComponent } from './styles/FunctionalVariablesDark';
+import { CssVarUtils } from './styles/CssVariablesUtils';
+import { FunctionalVariables } from './styles/ICssVariables';
 
 export default class App extends React.Component<any, IState> {
 
@@ -21,7 +22,7 @@ export default class App extends React.Component<any, IState> {
         this.state = {
             state: 'start',
             level: 1,
-            theme: DarkTheme,
+            themeName: ThemeName.Dark,
             activeBallId: null,
             activeJarId: null,
             previousJarsState: null,
@@ -37,9 +38,9 @@ export default class App extends React.Component<any, IState> {
     }
 
     public toggleTheme = (): void => {
-        const { theme } = this.state;
-        const newTheme = theme === DarkTheme ? LightTheme : DarkTheme;
-        this.setState({ theme: newTheme })
+        const { themeName } = this.state;
+        const newThemeName = themeName === ThemeName.Dark ? ThemeName.Light : ThemeName.Dark;
+        this.setState({ themeName: newThemeName })
     }
 
     public reset = (): void => {
@@ -222,7 +223,7 @@ export default class App extends React.Component<any, IState> {
                 if (index !== -1) {
                     canMakeSteps = true;
                 }
-    
+
                 if (length < 4) {
                     availableColors.push(topBall.colorId);
                 }
@@ -263,21 +264,22 @@ export default class App extends React.Component<any, IState> {
     }
 
     render() {
-        const { state, theme, level, balls, jars, activeBallId, moveCount, previousJarsState, showModal, modal } = this.state;
+        const { state, themeName, level, balls, jars, activeBallId, moveCount, previousJarsState, showModal, modal } = this.state;
 
         return (
-            <Background id={"main-container"} theme={theme}>
+            <Background id={"main-container"} theme={themeName}>
+                <GlobalStyle themeName={themeName} />
                 <MainContainer>
-                    <CustomTitle theme={theme}>
+                    <CustomTitle theme={themeName}>
                         {"SORT BALLS PUZZLE"}
                     </CustomTitle>
-                    <Field theme={theme}>
+                    <Field theme={themeName}>
                         {state === 'start' &&
                             <MessageContainer>
                                 <div style={{ fontSize: '30px', margin: '10px' }}>{'Lets start!'}</div>
                                 <ButtonsContainer>
-                                    <Button theme={theme} light={true} text={'EASY'} onClick={this.startFirstLevel} />
-                                    <Button theme={theme} light={true} text={'MEDIUM'} onClick={this.startSecondLevel} />
+                                    <Button light={true} text={'EASY'} onClick={this.startFirstLevel} />
+                                    <Button light={true} text={'MEDIUM'} onClick={this.startSecondLevel} />
                                 </ButtonsContainer>
                             </MessageContainer>
                         }
@@ -285,7 +287,7 @@ export default class App extends React.Component<any, IState> {
                             <>
                                 <Toolbar
                                     level={level}
-                                    theme={theme}
+                                    themeName={themeName}
                                     moveCount={moveCount}
                                     onBackClick={this.handleBackStep}
                                     onThemeToggle={this.toggleTheme}
@@ -294,7 +296,6 @@ export default class App extends React.Component<any, IState> {
                                     isBackActive={previousJarsState !== null}
                                 />
                                 <GameField
-                                    theme={theme}
                                     level={level}
                                     activeBallId={activeBallId}
                                     balls={balls}
@@ -307,7 +308,6 @@ export default class App extends React.Component<any, IState> {
                     </Field>
                     {showModal &&
                         <Modal
-                            theme={theme}
                             text={modal.text}
                             onDismiss={this.dismissModal}
                             buttons={[
@@ -339,7 +339,7 @@ const Background = styled.div`
 
     font-family: impact;
     
-    background-color: ${(props: IBasicProps) => props.theme.background}
+    background-color: ${CssVarUtils.getVar(FunctionalVariables.BackgroundColor)};
 `
 const MainContainer = styled.div`
     height: 530px;
@@ -357,10 +357,10 @@ const CustomTitle = styled.div`
 
     font-size: 50px;
 
-    color: ${(props: IBasicProps) => props.theme.font};
-    background-color: ${(props: IBasicProps) => props.theme.title.background};
+    color:  ${CssVarUtils.getVar(FunctionalVariables.FontColor)};
+    background-color: ${CssVarUtils.getVar(FunctionalVariables.TitleBackgroundColor)};
 
-    border-bottom: 3px solid ${(props: IBasicProps) => props.theme.accents};
+    border-bottom: 3px solid ${CssVarUtils.getVar(FunctionalVariables.AccentsColor)};
 `
 
 const MessageContainer = styled.div`
@@ -382,11 +382,14 @@ const Field = styled.div`
     height: 450px;
     width: inherit;
 
-    color: ${(props: IBasicProps) => props.theme.font};
-    background-color: ${(props: IBasicProps) => props.theme.field.background};
+    color: ${CssVarUtils.getVar(FunctionalVariables.FontColor)};
+    background-color: ${CssVarUtils.getVar(FunctionalVariables.FieldBackgroundColor)};
 `
 
 const ButtonsContainer = styled.div`
     margin: 10px;
 `
 
+const GlobalStyle = createGlobalStyle<{ themeName: ThemeName }>`
+    ${({ themeName }) => themeName === ThemeName.Dark ? FunctionalVariablesDarkComponent : FunctionalVariablesLightComponent}
+`
