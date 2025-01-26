@@ -9,7 +9,6 @@ interface IStyledProps {
 }
 const Button = (props: IButtonProps) => {
     const { text, onClick, light } = props;
-    console.log(light);
     return <StyledButton light={light} onClick={onClick}>{text}</StyledButton>
 }
 
