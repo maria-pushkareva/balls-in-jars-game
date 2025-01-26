@@ -2,6 +2,7 @@ import { IBallProps, IJarProps } from './interfaces';
 import styled from "styled-components";
 import { CssVarUtils } from '../styles/CssVariablesUtils';
 import { FunctionalVariables } from '../styles/ICssVariables';
+import Ball from './Ball';
 
 interface IProps {
     isFirstLevel: boolean,
@@ -13,7 +14,7 @@ const Jar = (props: IJarProps) => {
     return (
         <Container isFirstLevel={isFirstLevel} onClick={() => onJarClick(id)}>
             {
-                balls.map((ball) => {
+                balls.map((ball, index) => {
                     let color: string;
                     switch (ball.colorId) {
                         case 1:
@@ -41,19 +42,14 @@ const Jar = (props: IJarProps) => {
                             throw Error("Color wasn't found");
                     }
 
-                    if (isFirstLevel) {
-                        return <BigBall
-                            key={ball.id}
-                            onClick={(e) => onBallClick(id, ball.id, e)}
-                            color={color}
-                            isSelected={ball.id === activeBallId} />
-                    } else {
-                        return <SmallBall
-                            key={ball.id}
-                            onClick={(e) => onBallClick(id, ball.id, e)}
-                            color={color}
-                            isSelected={ball.id === activeBallId} />
-                    }
+                    return <Ball
+                        key={ball.id}
+                        ballSize={isFirstLevel ? 50 : 40}
+                        gapSize={isFirstLevel ? 5 : 3}
+                        color={color}
+                        isSelected={ball.id === activeBallId}
+                        isTop={index === balls.length - 1}
+                        onClick={(e) => onBallClick(id, ball.id, e)} />
                 })
             }
         </Container>
@@ -73,36 +69,6 @@ const Container = styled.div`
     border: 6px solid ${CssVarUtils.getVar(FunctionalVariables.JarsBorderColor)};
     border-top: 3px solid  ${CssVarUtils.getVar(FunctionalVariables.JarsBorderColor)};
     border-radius: 0px 0px ${(props: IProps) => props.isFirstLevel ? '25px 25px' : '20px 20px'};;
-`;
-
-const BigBall = styled.div`
-    height: ${(props: IBallProps) => props.isSelected ? '42px' : '50px'};
-    width: ${(props: IBallProps) => props.isSelected ? '42px' : '50px'};
-
-    margin: 0px 5px 5px 5px;
-
-    background-color: ${(props: IBallProps) => props.color};
-
-    border-color: ${CssVarUtils.getVar(FunctionalVariables.BallOnSelectBorderColor)};
-    border-width: ${(props: IBallProps) => props.isSelected ? '4px' : '0px'};
-    border-style: solid;
-
-    border-radius: 25px;
-`;
-
-const SmallBall = styled.div`
-    height: ${(props: IBallProps) => props.isSelected ? '34px' : '40px'};
-    width: ${(props: IBallProps) => props.isSelected ? '34px' : '40px'};
-
-    margin: 0px 3px 3px 3px;
-
-    background-color: ${(props: IBallProps) => props.color};
-
-    border-color: ${CssVarUtils.getVar(FunctionalVariables.BallOnSelectBorderColor)};
-    border-width: ${(props: IBallProps) => props.isSelected ? '3px' : '0px'};
-    border-style: solid;
-
-    border-radius: 20px;
 `;
 
 export default Jar;

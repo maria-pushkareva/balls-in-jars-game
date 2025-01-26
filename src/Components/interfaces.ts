@@ -39,8 +39,12 @@ export interface IBall {
 }
 
 export interface IBallProps {
+    ballSize: number;
+    gapSize: number;
     color: string;
     isSelected: boolean;
+    isTop: boolean;
+    onClick: (e: React.MouseEvent) => void;
 }
 
 export interface IGameFieldProps {
