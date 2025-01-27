@@ -6,17 +6,17 @@ import { FunctionalVariables } from "../styles/ICssVariables";
 
 
 interface IStyledProps {
-    light: boolean;
-    isDisabled: boolean;
+    $light: boolean;
+    $isDisabled: boolean;
 }
 const ButtonSmall = (props: IButtonSmallProps) => {
     const { text, onClick, light, disabled } = props;
 
-    return <StyledButton light={light} onClick={onClick} isDisabled={!Utils.isTrueOrUndefined(disabled)}>{text}</StyledButton>
+    return <StyledButton $light={light} onClick={onClick} $isDisabled={!Utils.isTrueOrUndefined(disabled)}>{text}</StyledButton>
 }
 
 
-const StyledButton = styled.button`
+const StyledButton = styled.button<IStyledProps>`
     height: 30px;
     width: 60px;
 
@@ -27,9 +27,9 @@ const StyledButton = styled.button`
 
     font-family: impact;
 
-    cursor: ${(props: IStyledProps) => props.isDisabled ? 'default' : 'pointer'};
+    cursor: ${({ $isDisabled }) => $isDisabled ? 'default' : 'pointer'};
 
-    background-color: ${(props: IStyledProps) => props.light ? CssVarUtils.getVar(FunctionalVariables.ButtonLightBackgroundColor) : CssVarUtils.getVar(FunctionalVariables.ButtonDarkBackgroundColor)};
-    color: ${(props: IStyledProps) => props.isDisabled ? CssVarUtils.getVar(FunctionalVariables.FontColorTransparent) : CssVarUtils.getVar(FunctionalVariables.FontColor)}
+    background-color: ${({ $light }) => $light ? CssVarUtils.getVar(FunctionalVariables.ButtonLightBackgroundColor) : CssVarUtils.getVar(FunctionalVariables.ButtonDarkBackgroundColor)};
+    color: ${({ $isDisabled }) => $isDisabled ? CssVarUtils.getVar(FunctionalVariables.FontColorTransparent) : CssVarUtils.getVar(FunctionalVariables.FontColor)}
 `
 export default ButtonSmall;

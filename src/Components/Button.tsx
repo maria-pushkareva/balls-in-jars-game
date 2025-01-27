@@ -5,15 +5,15 @@ import { FunctionalVariables } from "../styles/ICssVariables";
 
 
 interface IStyledProps {
-    light: boolean;
+    $light: boolean;
 }
 const Button = (props: IButtonProps) => {
     const { text, onClick, light } = props;
-    return <StyledButton light={light} onClick={onClick}>{text}</StyledButton>
+    return <StyledButton $light={light} onClick={onClick}>{text}</StyledButton>
 }
 
 
-const StyledButton = styled.button`
+const StyledButton = styled.button<IStyledProps>`
     height: 50px;
     width: 100px;
 
@@ -26,7 +26,7 @@ const StyledButton = styled.button`
 
     cursor: pointer;
 
-    background-color: ${(props: IStyledProps) => props.light ? CssVarUtils.getVar(FunctionalVariables.ButtonLightBackgroundColor) : CssVarUtils.getVar(FunctionalVariables.ButtonDarkBackgroundColor)};
+    background-color: ${({ $light }) => $light ? CssVarUtils.getVar(FunctionalVariables.ButtonLightBackgroundColor) : CssVarUtils.getVar(FunctionalVariables.ButtonDarkBackgroundColor)};
     color: ${CssVarUtils.getVar(FunctionalVariables.FontColor)}
 `
 export default Button;

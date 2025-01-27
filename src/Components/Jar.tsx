@@ -5,14 +5,14 @@ import { FunctionalVariables } from '../styles/ICssVariables';
 import Ball from './Ball';
 
 interface IProps {
-    isFirstLevel: boolean,
+    $isFirstLevel: boolean,
 }
 
 const Jar = (props: IJarProps) => {
     const { level, id, balls, activeBallId, onBallClick, onJarClick } = props;
     const isFirstLevel = level === 1;
     return (
-        <Container isFirstLevel={isFirstLevel} onClick={() => onJarClick(id)}>
+        <Container $isFirstLevel={isFirstLevel} onClick={() => onJarClick(id)}>
             {
                 balls.map((ball, index) => {
                     let color: string;
@@ -56,19 +56,19 @@ const Jar = (props: IJarProps) => {
     )
 }
 
-const Container = styled.div`
+const Container = styled.div<IProps>`
     display: flex; 
     flex-direction: column-reverse;   
 
-    height: ${(props: IProps) => props.isFirstLevel ? '230px' : '180px'};
-    width: ${(props: IProps) => props.isFirstLevel ? '60px' : '46px'};
+    height: ${({ $isFirstLevel }) => $isFirstLevel ? '230px' : '180px'};
+    width: ${({ $isFirstLevel }) => $isFirstLevel ? '60px' : '46px'};
 
     margin: 12px;
 
     background-color: ${CssVarUtils.getVar(FunctionalVariables.JarsBackgroundColor)};
     border: 6px solid ${CssVarUtils.getVar(FunctionalVariables.JarsBorderColor)};
     border-top: 3px solid  ${CssVarUtils.getVar(FunctionalVariables.JarsBorderColor)};
-    border-radius: 0px 0px ${(props: IProps) => props.isFirstLevel ? '25px 25px' : '20px 20px'};;
+    border-radius: 0px 0px ${({ $isFirstLevel }) => $isFirstLevel ? '25px 25px' : '20px 20px'};;
 `;
 
 export default Jar;
