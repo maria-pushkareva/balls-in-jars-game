@@ -267,13 +267,13 @@ export default class App extends React.Component<any, IState> {
         const { state, themeName, level, balls, jars, activeBallId, moveCount, previousJarsState, showModal, modal } = this.state;
 
         return (
-            <Background id={"main-container"} theme={themeName}>
+            <Background id={"main-container"}>
                 <GlobalStyle themeName={themeName} />
                 <MainContainer>
-                    <CustomTitle theme={themeName}>
+                    <CustomTitle>
                         {"SORT BALLS PUZZLE"}
                     </CustomTitle>
-                    <Field theme={themeName}>
+                    <Field>
                         {state === 'start' &&
                             <MessageContainer>
                                 <div style={{ fontSize: '30px', margin: '10px' }}>{'Lets start!'}</div>
