@@ -1,21 +1,48 @@
 import styled from "styled-components";
 import { IToolbarProps, ThemeName } from "./interfaces";
-import ButtonSmall from "./ButtonSmall";
+import Button from "./Button";
 import { FunctionalVariables } from "../styles/ICssVariables";
 import { CssVarUtils } from "../styles/CssVariablesUtils";
 
+interface IButton {
+    text: string;
+    disabled?: boolean;
+    onClick: () => void;
+}
+
 const Toolbar = (props: IToolbarProps) => {
     const { level, moveCount, isBackActive, themeName, onBackClick, onThemeToggle, reset, switchLevel } = props;
+
+    const buttons: IButton[] = [
+        {
+            text: 'BACK',
+            onClick: onBackClick,
+            disabled: isBackActive
+        },
+        {
+            text: 'RESET',
+            onClick: reset,
+            disabled: moveCount !== 0
+        },
+        {
+            text: level === 1 ? 'MEDIUM' : 'EASY',
+            onClick: switchLevel,
+        },
+        {
+            text: themeName === ThemeName.Light ? 'DARK' : 'LIGHT',
+            onClick: onThemeToggle,
+        },
+    ]
+
     return <Container>
         <div>
             <TextSpan>{`Level: ${level === 1 ? 'Easy' : 'Medium'}`}</TextSpan>
             <TextSpan>{`Move count: ${moveCount}`}</TextSpan>
         </div>
         <div>
-            <ButtonSmall text={'BACK'} light={true} onClick={onBackClick} disabled={isBackActive} />
-            <ButtonSmall text={'RESET'} light={true} onClick={reset} disabled={moveCount !== 0} />
-            <ButtonSmall text={level === 1 ? 'MEDIUM' : 'EASY'} light={true} onClick={switchLevel} />
-            <ButtonSmall text={themeName === ThemeName.Light ? 'DARK' : 'LIGHT'} light={true} onClick={onThemeToggle} />
+            {buttons.map(({ text, disabled, onClick }) => (
+                <Button text={text} disabled={disabled} onClick={onClick} light={true} isSmall={true} />
+            ))}
         </div>
     </Container>
 }

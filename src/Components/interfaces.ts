@@ -74,15 +74,10 @@ export interface IModalProps {
 }
 
 export interface IButtonProps {
+    disabled?: boolean;
+    isSmall?: boolean;
+    light: boolean;
     text: string;
-    light: boolean;
-    onClick: () => void;
-}
-
-export interface IButtonSmallProps {
-    disabled?: boolean,
-    text: string,
-    light: boolean;
     onClick: () => void;
 }
 
